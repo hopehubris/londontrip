@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>London Adventure — May 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Crimson+Pro:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+/* ══ TOKENS ══════════════════════════════════════════════════════════ */
+:root {
+  --bg:       #faf8f5;
+  --bg-warm:  #f4efe8;
+  --bg-card:  #ffffff;
+  --border:   #e2d9ce;
+  --border-soft: #ede7de;
+  --gold:     #a07828;
+  --gold-lt:  #c9a84c;
+  --gold-bg:  #fdf6e8;
+  --text:     #1e1a16;
+  --text-mid: #4a3f35;
+  --text-muted: #9a8878;
+  --red:      #8b1f1f;
+  --shadow-sm: 0 1px 4px rgba(0,0,0,.07), 0 2px 12px rgba(0,0,0,.05);
+  --shadow-md: 0 2px 8px rgba(0,0,0,.08), 0 4px 24px rgba(0,0,0,.06);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Crimson Pro',Georgia,serif;font-size:17px;line-height:1.65;min-height:100vh;}
+
+/* ══ SHARED HEADER ═══════════════════════════════════════════════════ */
+header{
+  background:var(--bg-card);
+  text-align:center;
+  padding:48px 24px 32px;
+  border-bottom:1px solid var(--border);
+  box-shadow:var(--shadow-sm);
+}
+.eyebrow{
+  font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.32em;
+  color:var(--gold);text-transform:uppercase;display:block;margin-bottom:14px;
+}
+header h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2rem,6vw,3.4rem);font-weight:700;line-height:1.1;color:var(--text);
+}
+header h1 em{font-style:italic;color:var(--gold-lt);}
+.header-divider{
+  width:60px;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold-lt),transparent);
+  margin:18px auto;
+}
+.header-meta{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin-top:4px;}
+.header-meta span{
+  font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.14em;
+  color:var(--text-muted);text-transform:uppercase;
+}
+
+/* ══ TAB NAV ═════════════════════════════════════════════════════════ */
+.tab-nav{
+  display:flex;justify-content:center;
+  background:var(--bg-card);
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:200;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.tab-btn{
+  padding:14px 30px;
+  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--text-muted);background:none;border:none;
+  border-bottom:2px solid transparent;cursor:pointer;transition:all .2s;white-space:nowrap;
+}
+.tab-btn:hover{color:var(--text-mid);}
+.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
+@media(max-width:520px){.tab-btn{padding:11px 13px;font-size:9.5px;letter-spacing:.09em;}}
+
+/* ══ VIEW WRAPPER ════════════════════════════════════════════════════ */
+.view{display:none;}.view.active{display:block;}
+
+/* ════════════════════════════════════════════════════════════════════
+   VIEW 1 — CHECKLIST
+════════════════════════════════════════════════════════════════════ */
+.progress-wrap{max-width:700px;margin:32px auto 0;padding:0 24px;}
+.progress-label{
+  display:flex;justify-content:space-between;
+  font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.14em;
+  color:var(--text-muted);text-transform:uppercase;margin-bottom:8px;
+}
+.progress-bar-bg{height:4px;background:var(--border);border-radius:4px;overflow:hidden;}
+.progress-bar-fill{
+  height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-lt));
+  border-radius:4px;transition:width .4s ease;width:0%;
+}
+.cl-container{max-width:700px;margin:0 auto;padding:0 24px 70px;}
+.day-section{margin-top:36px;}
+.day-header{display:flex;align-items:center;gap:14px;margin-bottom:10px;}
+.day-num{
+  font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;
+  color:rgba(160,120,40,.25);min-width:34px;line-height:1;
+}
+.day-info{flex:1;}
+.day-date-label{
+  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.2em;
+  color:var(--gold);text-transform:uppercase;display:block;margin-bottom:2px;
+}
+.day-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:600;color:var(--text);}
+.day-badges{display:flex;gap:5px;flex-wrap:wrap;}
+.badge{padding:2px 9px;border-radius:100px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.06em;text-transform:uppercase;}
+.badge-museum{background:#eef3fb;color:#3a6fb5;border:1px solid #c5d8f5;}
+.badge-dw    {background:#eef8f4;color:#2a7d5a;border:1px solid #b8e2d2;}
+.badge-hp    {background:#fdf6e8;color:#8a6210;border:1px solid #e8d49a;}
+.badge-castle{background:#fdf0f0;color:#8b1f1f;border:1px solid #f0c4c4;}
+.badge-daytrip{background:#f5f0fc;color:#6b41a8;border:1px solid #d8c4f5;}
+.badge-rest  {background:#f5f2ee;color:#8a7a6a;border:1px solid #ddd4c8;}
+
+/* checklist card */
+.checklist{
+  border:1px solid var(--border);border-radius:10px;
+  background:var(--bg-card);overflow:hidden;
+  box-shadow:var(--shadow-sm);
+}
+.check-item{
+  display:flex;align-items:flex-start;gap:14px;padding:12px 18px;
+  border-bottom:1px solid var(--border-soft);cursor:pointer;transition:background .15s;
+}
+.check-item:last-child{border-bottom:none;}
+.check-item:hover{background:var(--bg-warm);}
+.check-item input[type="checkbox"]{
+  appearance:none;-webkit-appearance:none;width:18px;height:18px;
+  border:1.5px solid var(--border);border-radius:4px;background:var(--bg);
+  cursor:pointer;flex-shrink:0;margin-top:2px;transition:all .2s;position:relative;
+}
+.check-item input[type="checkbox"]:checked{background:var(--gold);border-color:var(--gold);}
+.check-item input[type="checkbox"]:checked::after{
+  content:'';position:absolute;left:4px;top:1px;width:6px;height:10px;
+  border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg);
+}
+.check-label{flex:1;display:flex;align-items:flex-start;gap:8px;}
+.check-icon{font-size:1em;flex-shrink:0;margin-top:1px;}
+.check-text{flex:1;font-size:1rem;color:var(--text-mid);transition:all .2s;line-height:1.5;}
+.check-note{display:block;font-size:.81rem;color:var(--text-muted);font-style:italic;margin-top:2px;}
+.check-item.done .check-text{text-decoration:line-through;color:var(--text-muted);}
+.check-item.done .check-note{color:#c0b0a0;}
+.check-item.sub{padding-left:36px;background:var(--bg);}
+.check-item.sub .check-text{font-size:.93rem;color:var(--text-muted);}
+
+/* week divider */
+.week-divider{
+  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.3em;
+  color:var(--gold);text-transform:uppercase;
+  display:flex;align-items:center;gap:14px;margin-top:48px;margin-bottom:-8px;
+}
+.week-divider::before,.week-divider::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* tips */
+.tips-section{margin-top:48px;}
+.tips-section h2{
+  font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--text);
+  margin-bottom:14px;display:flex;align-items:center;gap:12px;
+}
+.tips-section h2::after{content:'';flex:1;height:1px;background:var(--border);}
+.tip-list{border:1px solid var(--border);border-radius:10px;background:var(--bg-card);overflow:hidden;box-shadow:var(--shadow-sm);}
+.tip-row{display:flex;gap:12px;padding:12px 18px;border-bottom:1px solid var(--border-soft);align-items:flex-start;}
+.tip-row:last-child{border-bottom:none;}
+.tip-row-icon{font-size:1.1em;flex-shrink:0;margin-top:1px;}
+.tip-row-text{font-size:.95rem;color:var(--text-mid);line-height:1.6;}
+.tip-row-text strong{color:var(--text);font-weight:600;}
+
+.actions{display:flex;justify-content:center;margin-top:40px;}
+.btn-reset{
+  font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--text-muted);background:none;border:1px solid var(--border);
+  border-radius:100px;padding:8px 24px;cursor:pointer;transition:all .2s;
+}
+.btn-reset:hover{color:var(--gold);border-color:var(--gold-lt);}
+
+/* ── map section (checklist view) ── */
+.map-section{max-width:900px;margin:52px auto 0;padding:0 24px 60px;}
+.map-section-header{display:flex;align-items:center;gap:16px;margin-bottom:14px;}
+.map-section-header h2{
+  font-family:'Playfair Display',serif;font-size:1.35rem;color:var(--text);white-space:nowrap;
+}
+.map-section-header::after{content:'';flex:1;height:1px;background:var(--border);}
+.map-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.map-filter-btn{
+  display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:100px;
+  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.09em;text-transform:uppercase;
+  border:1px solid;background:var(--bg-card);cursor:pointer;transition:all .2s;
+  box-shadow:var(--shadow-sm);
+}
+.mf-all    {border-color:#d9c88a;color:var(--gold);}
+.mf-museum {border-color:#c5d8f5;color:#3a6fb5;}
+.mf-dw     {border-color:#b8e2d2;color:#2a7d5a;}
+.mf-hp     {border-color:#e8d49a;color:#8a6210;}
+.mf-castle {border-color:#f0c4c4;color:#8b1f1f;}
+.mf-daytrip{border-color:#d8c4f5;color:#6b41a8;}
+.map-filter-btn:not(.active){opacity:.5;}
+.map-filter-btn.active,.map-filter-btn:hover{opacity:1;}
+.mf-all.active,.mf-all:hover       {background:var(--gold-bg);}
+.mf-museum.active,.mf-museum:hover {background:#eef3fb;}
+.mf-dw.active,.mf-dw:hover         {background:#eef8f4;}
+.mf-hp.active,.mf-hp:hover         {background:#fdf6e8;}
+.mf-castle.active,.mf-castle:hover {background:#fdf0f0;}
+.mf-daytrip.active,.mf-daytrip:hover{background:#f5f0fc;}
+
+#overview-map{
+  width:100%;height:540px;border-radius:12px;
+  border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow-md);
+}
+.map-legend{
+  display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;
+  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--text-muted);
+}
+.map-legend-item{display:flex;align-items:center;gap:5px;}
+.map-legend-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+
+/* Leaflet popup */
+.leaflet-popup-content-wrapper{
+  background:#fff;border:1px solid var(--border);border-radius:10px;
+  box-shadow:var(--shadow-md);color:var(--text);
+  font-family:'Crimson Pro',Georgia,serif;
+}
+.leaflet-popup-tip{background:#fff;}
+.leaflet-popup-close-button{color:var(--text-muted)!important;font-size:18px!important;top:8px!important;right:10px!important;}
+.leaflet-popup-close-button:hover{color:var(--gold)!important;}
+.popup-inner{padding:3px 2px;min-width:175px;}
+.popup-cat{
+  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  display:inline-block;padding:2px 8px;border-radius:100px;margin-bottom:5px;
+}
+.popup-cat-museum {background:#eef3fb;color:#3a6fb5;}
+.popup-cat-dw     {background:#eef8f4;color:#2a7d5a;}
+.popup-cat-hp     {background:#fdf6e8;color:#8a6210;}
+.popup-cat-castle {background:#fdf0f0;color:#8b1f1f;}
+.popup-cat-daytrip{background:#f5f0fc;color:#6b41a8;}
+.popup-cat-hotel  {background:#f5f2ee;color:#4a3f35;}
+.popup-name{font-family:'Playfair Display',serif;font-size:.97rem;font-weight:600;color:var(--text);margin-bottom:3px;line-height:1.3;}
+.popup-day{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.14em;color:var(--text-muted);text-transform:uppercase;}
+.popup-note{font-size:.81rem;color:var(--text-muted);font-style:italic;margin-top:4px;line-height:1.4;}
+
+/* ════════════════════════════════════════════════════════════════════
+   VIEW 2 — ITINERARY CARD
+════════════════════════════════════════════════════════════════════ */
+#view-itinerary{background:var(--bg);}
+.ic-wrap{max-width:860px;margin:0 auto;padding:44px 28px 80px;}
+.ic-title{text-align:center;margin-bottom:30px;}
+.ic-title h2{
+  font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.2rem);
+  font-style:italic;font-weight:400;color:var(--text);
+}
+.ic-title p{font-family:'Crimson Pro',serif;font-size:1rem;color:var(--text-muted);margin-top:5px;letter-spacing:.05em;}
+.ic-meta-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px 36px;
+  max-width:640px;margin:28px auto;padding:20px 24px;
+  border-top:2px solid var(--text);border-bottom:1px solid var(--border);
+}
+.ic-meta-row{display:flex;align-items:baseline;gap:8px;}
+.ic-meta-label{
+  font-family:'DM Mono',monospace;font-size:10px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--text);white-space:nowrap;
+}
+.ic-meta-value{font-family:'Crimson Pro',serif;font-size:.97rem;color:var(--text-muted);}
+.ic-table{width:100%;border-collapse:collapse;margin-top:28px;box-shadow:var(--shadow-sm);border-radius:8px;overflow:hidden;}
+.ic-table tbody tr{border-bottom:1px solid var(--border);}
+.ic-table tbody tr:last-child{border-bottom:none;}
+.ic-day-cell{width:60px;min-width:60px;vertical-align:middle;text-align:center;padding:0;border-right:3px solid var(--text);}
+.ic-day-inner{
+  writing-mode:vertical-rl;transform:rotate(180deg);
+  font-family:'DM Mono',monospace;font-size:10.5px;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;padding:18px 12px;
+}
+.style-a{background:#dce6f0;color:#1a2a3a;}
+.style-b{background:#e8dfc8;color:#3a2e1a;}
+.style-c{background:#c9a84c;color:#1a0f00;}
+.ic-body-cell{padding:16px 22px;vertical-align:top;background:#fff;}
+.ic-slots{display:flex;flex-direction:column;gap:9px;}
+.ic-slot{display:grid;grid-template-columns:88px 1fr;gap:8px;align-items:baseline;}
+.ic-slot-label{
+  font-family:'DM Mono',monospace;font-size:10px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--text);
+}
+.ic-slot-text{font-family:'Crimson Pro',serif;font-size:.97rem;color:var(--text-muted);line-height:1.5;}
+.ic-slot-text strong{color:var(--text);font-weight:500;}
+.ic-date-bar{
+  font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--text-muted);
+  margin-bottom:9px;padding-bottom:7px;border-bottom:1px dotted var(--border);
+}
+@media(max-width:560px){
+  .ic-meta-grid{grid-template-columns:1fr;}
+  .ic-slot{grid-template-columns:68px 1fr;}
+  .ic-body-cell{padding:12px 14px;}
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   VIEW 3 — DAY MAPS
+════════════════════════════════════════════════════════════════════ */
+#view-daymap{background:var(--bg);}
+.dm-wrap{max-width:860px;margin:0 auto;padding:36px 24px 80px;}
+.dm-intro{
+  font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--text-muted);text-align:center;margin-bottom:28px;
+}
+.dm-day{margin-bottom:8px;}
+.dm-day-header{
+  display:flex;align-items:center;gap:14px;padding:14px 18px;
+  background:var(--bg-card);border:1px solid var(--border);border-radius:10px;
+  cursor:pointer;transition:background .15s;user-select:none;
+  box-shadow:var(--shadow-sm);
+}
+.dm-day-header:hover{background:var(--bg-warm);}
+.dm-day-num{
+  font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;
+  color:rgba(160,120,40,.3);min-width:36px;line-height:1;
+}
+.dm-day-info{flex:1;}
+.dm-day-date{
+  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;
+  color:var(--gold);text-transform:uppercase;display:block;
+}
+.dm-day-title{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--text);}
+.dm-toggle{font-family:'DM Mono',monospace;font-size:11px;color:var(--text-muted);}
+.dm-day-body{overflow:hidden;transition:max-height .35s ease;}
+.dm-inner{
+  padding:16px 18px 20px;
+  border:1px solid var(--border);border-top:none;
+  border-radius:0 0 10px 10px;
+  background:#fff;margin-bottom:4px;
+}
+.dm-stops{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px;}
+.dm-stop{
+  display:inline-flex;align-items:center;gap:6px;padding:4px 11px;
+  border-radius:6px;font-size:.86rem;
+  background:var(--bg);border:1px solid var(--border);color:var(--text-mid);
+}
+.dm-stop-num{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--gold);font-weight:700;}
+.dm-note-box{font-size:.85rem;color:var(--text-muted);font-style:italic;margin-bottom:10px;}
+.dm-map-el{
+  width:100%;height:370px;border-radius:9px;
+  border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow-sm);
+}
+
+/* ── FOOTER ── */
+footer{
+  text-align:center;padding:40px 24px;
+  border-top:1px solid var(--border);
+  font-size:.85rem;color:var(--text-muted);font-style:italic;
+  background:var(--bg-card);
+}
+</style>
+</head>
+<body>
+
+<!-- ══ SHARED HEADER ═════════════════════════════════════════════ -->
+<header>
+  <span class="eyebrow">✦ Personal Travel Itinerary ✦</span>
+  <h1>London <em>Adventure</em></h1>
+  <div class="header-divider"></div>
+  <div class="header-meta">
+    <span>May 5 – 18, 2025</span><span>·</span>
+    <span>13 Days</span><span>·</span>
+    <span>Two Adventurers</span>
+  </div>
+</header>
+
+<!-- ══ TAB NAV ═══════════════════════════════════════════════════ -->
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('checklist',this)">☑ Checklist</button>
+  <button class="tab-btn"        onclick="switchTab('itinerary',this)">📋 Itinerary Card</button>
+  <button class="tab-btn"        onclick="switchTab('daymap',this)">🗺 Day Maps</button>
+</nav>
+
+
+<!-- ════════════════════════════════════════════════════════════════
+     VIEW 1 — CHECKLIST
+════════════════════════════════════════════════════════════════════ -->
+<div id="view-checklist" class="view active">
+  <div class="progress-wrap">
+    <div class="progress-label"><span>Progress</span><span id="progress-text">0 of 0 checked</span></div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill"></div></div>
+  </div>
+
+  <div class="cl-container">
+    <div class="week-divider">Week One</div>
+
+    <div class="day-section">
+      <div class="day-header"><div class="day-num">01</div><div class="day-info"><span class="day-date-label">Monday · May 5</span><div class="day-title">Arrival Day</div></div><div class="day-badges"><span class="badge badge-rest">Arrival</span></div></div>
+      <div class="checklist">
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🏨</span><span class="check-text">Check in — Travelodge London Covent Garden<span class="check-note">10 Drury Lane, London WC2B 5RE</span></span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🚇</span><span class="check-text">Get Oyster card at airport or Tube station<span class="check-note">Significantly cheaper than individual tickets</span></span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🌉</span><span class="check-text">Evening walk — Embankment or Covent Garden</span></span></label>
+      </div>
+    </div>
+
+    <div class="day-section">
+      <div class="day-header"><div class="day-num">02</div><div class="day-info"><span class="day-date-label">Tuesday · May 6</span><div class="day-title">British Museum + House of MinaLima</div></div><div class="day-badges"><span class="badge badge-museum">Museum</span><span class="badge badge-hp">Harry Potter</span></div></div>
+      <div class="checklist">
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🎟</span><span class="check-text">Book British Museum timed tickets online (free)<span class="check-note">Avoids long walk-up queues</span></span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🏛</span><span class="check-text">British Museum — allow 3–4 hours</span></span></label>
+        <label class="check-item sub"><input type="checkbox"><span class="check-label"><span class="check-text">Rosetta Stone</span></span></label>
+        <label class="check-item sub"><input type="checkbox"><span class="check-label"><span class="check-text">Egyptian mummies</span></span></label>
+        <label class="check-item sub"><input type="checkbox"><span class="check-label"><span class="check-text">Assyrian lion hunt reliefs</span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">⚡</span><span class="check-text">House of MinaLima — Wardour St, Soho<span class="check-note">Free HP graphic design gallery — original props & prints</span></span></span></label>
+      </div>
+    </div>
+
+    <div class="day-section">
+      <div class="day-header"><div class="day-num">03</div><div class="day-info"><span class="day-date-label">Wednesday · May 7</span><div class="day-title">Tower of London + Leadenhall Market</div></div><div class="day-badges"><span class="badge badge-castle">Castle</span><span class="badge badge-hp">Harry Potter</span></div></div>
+      <div class="checklist">
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🎟</span><span class="check-text">Book Tower of London tickets in advance<span class="check-note">Sells out — on-the-door queues can be very long</span></span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🏰</span><span class="check-text">Tower of London — allow a full morning</span></span></label>
+        <label class="check-item sub"><input type="checkbox"><span class="check-label"><span class="check-text">Yeoman Warder (Beefeater) tour — included, don't skip</span></span></label>
+        <label class="check-item sub"><input type="checkbox"><span class="check-label"><span class="check-text">Crown Jewels</span></span></label>
+        <label class="check-item sub"><input type="checkbox"><span class="check-label"><span class="check-text">See the ravens</span></span></label>
+        <label class="check-item sub"><input type="checkbox"><span class="check-label"><span class="check-text">White Tower armoury</span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">⚡</span><span class="check-text">Leadenhall Market — Diagon Alley entrance<span class="check-note">Look up the specific archway angle beforehand</span></span></span></label>
+      </div>
+    </div>
+
+    <div class="day-section">
+      <div class="day-header"><div class="day-num">04</div><div class="day-info"><span class="day-date-label">Thursday · May 8</span><div class="day-title">Doctor Who Day</div></div><div class="day-badges"><span class="badge badge-dw">Doctor Who</span></div></div>
+      <div class="checklist">
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🎟</span><span class="check-text">Book Brit Movie Tours Doctor Who Walking Tour<span class="check-note">britmovietours.com — very popular, book ahead</span></span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🚀</span><span class="check-text">Doctor Who Walking Tour — central London filming locations</span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🚀</span><span class="check-text">Forbidden Planet — 179 Shaftesbury Ave<span class="check-note">Massive Doctor Who merchandise section</span></span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🚀</span><span class="check-text">The Who Shop — Upton Park<span class="check-note">Closed Sundays; closes 4pm Mondays. World-class DW museum & shop with actual costumes</span></span></span></label>
+      </div>
+    </div>
+
+    <div class="day-section">
+      <div class="day-header"><div class="day-num">05</div><div class="day-info"><span class="day-date-label">Friday · May 9</span><div class="day-title">South Kensington Museum Cluster</div></div><div class="day-badges"><span class="badge badge-museum">Museum</span></div></div>
+      <div class="checklist">
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🎟</span><span class="check-text">Book Natural History Museum timed entry (free)<span class="check-note">Walk-up queues can exceed an hour</span></span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🦕</span><span class="check-text">Natural History Museum</span></span></label>
+        <label class="check-item sub"><input type="checkbox"><span class="check-label"><span class="check-text">Blue whale skeleton in Hintze Hall</span></span></label>
+        <label class="check-item sub"><input type="checkbox"><span class="check-label"><span class="check-text">Dinosaur gallery</span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🏺</span><span class="check-text">Victoria & Albert Museum<span class="check-note">Art, design & culture — Cast Courts are spectacular</span></span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🔭</span><span class="check-text">Science Museum<span class="check-note">Flight hall is unmissable</span></span></span></label>
+      </div>
+    </div>
+
+    <div class="day-section">
+      <div class="day-header"><div class="day-num">06</div><div class="day-info"><span class="day-date-label">Saturday · May 10</span><div class="day-title">Day Trip — Windsor Castle</div></div><div class="day-badges"><span class="badge badge-castle">Castle</span><span class="badge badge-daytrip">Day Trip</span></div></div>
+      <div class="checklist">
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🚂</span><span class="check-text">Train from Waterloo or Paddington (~45 min)<span class="check-note">⚠️ Windsor Castle is CLOSED Tuesdays & Wednesdays</span></span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🏰</span><span class="check-text">Windsor Castle — allow a full day</span></span></label>
+        <label class="check-item sub"><input type="checkbox"><span class="check-label"><span class="check-text">State Apartments</span></span></label>
+        <label class="check-item sub"><input type="checkbox"><span class="check-label"><span class="check-text">St George's Chapel</span></span></label>
+        <label class="check-item sub"><input type="checkbox"><span class="check-label"><span class="check-text">Audio guide (included in ticket)</span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🍽</span><span class="check-text">Lunch in Windsor town</span></span></label>
+      </div>
+    </div>
+
+    <div class="day-section">
+      <div class="day-header"><div class="day-num">07</div><div class="day-info"><span class="day-date-label">Sunday · May 11</span><div class="day-title">Rest Day — National Gallery</div></div><div class="day-badges"><span class="badge badge-museum">Museum</span><span class="badge badge-rest">Rest</span></div></div>
+      <div class="checklist">
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🖼</span><span class="check-text">National Gallery — Trafalgar Square (free)</span></span></label>
+        <label class="check-item sub"><input type="checkbox"><span class="check-label"><span class="check-text">Van Gogh's Sunflowers</span></span></label>
+        <label class="check-item sub"><input type="checkbox"><span class="check-label"><span class="check-text">da Vinci, Rembrandt, Monet, Turner</span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">☀️</span><span class="check-text">Afternoon: Southbank walk or Covent Garden</span></span></label>
+      </div>
+    </div>
+
+    <div class="week-divider" style="margin-top:48px">Week Two</div>
+
+    <div class="day-section">
+      <div class="day-header"><div class="day-num">08</div><div class="day-info"><span class="day-date-label">Monday · May 12</span><div class="day-title">Day Trip — Cardiff (Doctor Who Country)</div></div><div class="day-badges"><span class="badge badge-dw">Doctor Who</span><span class="badge badge-daytrip">Day Trip</span></div></div>
+      <div class="checklist">
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🗺</span><span class="check-text">Download Doctor Who Cardiff filming locations map<span class="check-note">Search "Doctor Who Cardiff filming locations map" — excellent free fan maps</span></span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🚂</span><span class="check-text">Train from Paddington to Cardiff (~2 hrs)</span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🚀</span><span class="check-text">Roald Dahl Plass — iconic Doctor Who filming location</span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🏰</span><span class="check-text">Cardiff Castle</span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🏛</span><span class="check-text">National Museum Cardiff (free)</span></span></label>
+      </div>
+    </div>
+
+    <div class="day-section">
+      <div class="day-header"><div class="day-num">09</div><div class="day-info"><span class="day-date-label">Tuesday · May 13</span><div class="day-title">Day Trip — Gloucester Cathedral</div></div><div class="day-badges"><span class="badge badge-hp">Harry Potter</span><span class="badge badge-daytrip">Day Trip</span></div></div>
+      <div class="checklist">
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🚂</span><span class="check-text">Train from London to Gloucester (~2 hrs)</span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">⚡</span><span class="check-text">Gloucester Cathedral — free entry<span class="check-note">Cloisters = Hogwarts corridors in films 1 & 2</span></span></span></label>
+        <label class="check-item sub"><input type="checkbox"><span class="check-label"><span class="check-text">The cloisters — Hogwarts corridors</span></span></label>
+        <label class="check-item sub"><input type="checkbox"><span class="check-label"><span class="check-text">Whispering gallery</span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🌿</span><span class="check-text">Optional: Cheltenham (~30 min away)</span></span></label>
+      </div>
+    </div>
+
+    <div class="day-section">
+      <div class="day-header"><div class="day-num">10</div><div class="day-info"><span class="day-date-label">Wednesday · May 14</span><div class="day-title">Platform 9¾ + Science Museum</div></div><div class="day-badges"><span class="badge badge-hp">Harry Potter</span><span class="badge badge-museum">Museum</span></div></div>
+      <div class="checklist">
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">⚡</span><span class="check-text">Platform 9¾ — King's Cross Station<span class="check-note">Mid-morning weekday = shortest queues; staff provide house scarves & wands</span></span></span></label>
+        <label class="check-item sub"><input type="checkbox"><span class="check-label"><span class="check-text">Photo with the trolley-in-the-wall</span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">⚡</span><span class="check-text">Harry Potter Shop at King's Cross<span class="check-note">Exclusive items — Chocolate Frog, house wands</span></span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🔭</span><span class="check-text">Science Museum (if not yet visited)</span></span></label>
+      </div>
+    </div>
+
+    <div class="day-section">
+      <div class="day-header"><div class="day-num">11</div><div class="day-info"><span class="day-date-label">Thursday · May 15</span><div class="day-title">Day Trip — Castle Day (Choose One)</div></div><div class="day-badges"><span class="badge badge-castle">Castle</span><span class="badge badge-daytrip">Day Trip</span></div></div>
+      <div class="checklist">
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🏰</span><span class="check-text">Leeds Castle — Maidstone, Kent (~1 hr + shuttle)<span class="check-note">Moated castle — maze, falconry. Ticket valid 1 full year.</span></span></span></label>
+        <label class="check-item sub"><input type="checkbox"><span class="check-label"><span class="check-text">Garden maze</span></span></label>
+        <label class="check-item sub"><input type="checkbox"><span class="check-label"><span class="check-text">Falconry display</span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🏰</span><span class="check-text">OR: Hever Castle — Kent (~1.5 hrs)<span class="check-note">Anne Boleyn's childhood home — intimate, gorgeous gardens</span></span></span></label>
+        <label class="check-item sub"><input type="checkbox"><span class="check-label"><span class="check-text">Italian garden & grounds</span></span></label>
+      </div>
+    </div>
+
+    <div class="day-section">
+      <div class="day-header"><div class="day-num">12</div><div class="day-info"><span class="day-date-label">Friday · May 16</span><div class="day-title">Flex Day</div></div><div class="day-badges"><span class="badge badge-rest">Flexible</span></div></div>
+      <div class="checklist">
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🔁</span><span class="check-text">Revisit a favourite spot or museum</span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">⚓</span><span class="check-text">Optional: Greenwich — Royal Observatory, Prime Meridian</span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🌸</span><span class="check-text">Optional: Notting Hill — Portobello Road Market</span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🧀</span><span class="check-text">Optional: Borough Market — London's finest food market</span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🛍</span><span class="check-text">Final souvenir shopping</span></span></label>
+      </div>
+    </div>
+
+    <div class="day-section">
+      <div class="day-header"><div class="day-num">13</div><div class="day-info"><span class="day-date-label">Saturday · May 17</span><div class="day-title">Final London Day</div></div><div class="day-badges"><span class="badge badge-rest">Last Day</span></div></div>
+      <div class="checklist">
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🌉</span><span class="check-text">Walk Westminster Bridge → Tower Bridge along the Embankment</span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🛍</span><span class="check-text">Final souvenirs</span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🍽</span><span class="check-text">Farewell dinner</span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🧳</span><span class="check-text">Pack & prepare for departure</span></span></label>
+      </div>
+    </div>
+
+    <div class="day-section">
+      <div class="day-header"><div class="day-num">14</div><div class="day-info"><span class="day-date-label">Sunday · May 18</span><div class="day-title">Departure</div></div><div class="day-badges"><span class="badge badge-rest">Departure</span></div></div>
+      <div class="checklist">
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">🚇</span><span class="check-text">Elizabeth line to Heathrow — fast and reliable</span></span></label>
+        <label class="check-item"><input type="checkbox"><span class="check-label"><span class="check-icon">✈️</span><span class="check-text">Depart London — safe travels!</span></span></label>
+      </div>
+    </div>
+
+    <div class="tips-section">
+      <h2>Key Tips</h2>
+      <div class="tip-list">
+        <div class="tip-row"><span class="tip-row-icon">🎟</span><span class="tip-row-text"><strong>Book in advance:</strong> Tower of London, Platform 9¾, Brit Movie Tours DW walking tour, and NHM timed entry. Some sell out completely.</span></div>
+        <div class="tip-row"><span class="tip-row-icon">⚠️</span><span class="tip-row-text"><strong>Windsor closed Tues & Wed.</strong> Don't rearrange the day trip to a closed day.</span></div>
+        <div class="tip-row"><span class="tip-row-icon">🆓</span><span class="tip-row-text"><strong>Free museums:</strong> British Museum, NHM, V&A, Science Museum, National Gallery, House of MinaLima, and National Museum Cardiff are all free.</span></div>
+        <div class="tip-row"><span class="tip-row-icon">🚇</span><span class="tip-row-text"><strong>Oyster card</strong> — get one at the airport. Far cheaper than individual tickets on all Tube lines and buses.</span></div>
+        <div class="tip-row"><span class="tip-row-icon">🗺</span><span class="tip-row-text"><strong>Cardiff prep:</strong> Download a Doctor Who filming locations map before the day trip — fan-made maps are free and excellent.</span></div>
+        <div class="tip-row"><span class="tip-row-icon">🏨</span><span class="tip-row-text"><strong>Home Base:</strong> Travelodge London Covent Garden — 10 Drury Lane, WC2B 5RE. Walking distance to many central attractions.</span></div>
+      </div>
+    </div>
+    <div class="actions"><button class="btn-reset" onclick="resetAll()">↺ Reset All Checkboxes</button></div>
+  </div>
+
+  <!-- Overview Map -->
+  <div class="map-section">
+    <div class="map-section-header"><h2>🗺 Locations Map</h2></div>
+    <div class="map-filters">
+      <button class="map-filter-btn mf-all active"  onclick="filterMap('all')">● All</button>
+      <button class="map-filter-btn mf-museum"       onclick="filterMap('museum')">🏛 Museums</button>
+      <button class="map-filter-btn mf-dw"           onclick="filterMap('dw')">🚀 Doctor Who</button>
+      <button class="map-filter-btn mf-hp"           onclick="filterMap('hp')">⚡ Harry Potter</button>
+      <button class="map-filter-btn mf-castle"       onclick="filterMap('castle')">🏰 Castles</button>
+      <button class="map-filter-btn mf-daytrip"      onclick="filterMap('daytrip')">🚂 Day Trips</button>
+    </div>
+    <div id="overview-map"></div>
+    <div class="map-legend">
+      <div class="map-legend-item"><span class="map-legend-dot" style="background:#3a6fb5"></span>Museums</div>
+      <div class="map-legend-item"><span class="map-legend-dot" style="background:#2a7d5a"></span>Doctor Who</div>
+      <div class="map-legend-item"><span class="map-legend-dot" style="background:#a07828"></span>Harry Potter</div>
+      <div class="map-legend-item"><span class="map-legend-dot" style="background:#8b1f1f"></span>Castles</div>
+      <div class="map-legend-item"><span class="map-legend-dot" style="background:#6b41a8"></span>Day Trips</div>
+      <div class="map-legend-item"><span class="map-legend-dot" style="background:#4a3f35;border:1px solid #ccc;"></span>Home Base</div>
+    </div>
+  </div>
+  <footer><p>Created with love for two adventurers heading to London ✦ May 2025</p></footer>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════════════
+     VIEW 2 — ITINERARY CARD
+════════════════════════════════════════════════════════════════════ -->
+<div id="view-itinerary" class="view">
+  <div class="ic-wrap">
+    <div class="ic-title">
+      <h2>Travel itinerary</h2>
+      <p>(London, England — 13 Day Trip)</p>
+    </div>
+    <div class="ic-meta-grid">
+      <div class="ic-meta-row"><span class="ic-meta-label">Hotel:</span><span class="ic-meta-value">Travelodge Covent Garden, 10 Drury Lane WC2B 5RE</span></div>
+      <div class="ic-meta-row"><span class="ic-meta-label">Arrival:</span><span class="ic-meta-value">May 5, 2025</span></div>
+      <div class="ic-meta-row"><span class="ic-meta-label">Travellers:</span><span class="ic-meta-value">Two — wife &amp; daughter</span></div>
+      <div class="ic-meta-row"><span class="ic-meta-label">Departure:</span><span class="ic-meta-value">May 18, 2025</span></div>
+    </div>
+    <table class="ic-table"><tbody>
+
+      <tr><td class="ic-day-cell"><div class="ic-day-inner style-a">Day 1</div></td><td class="ic-body-cell">
+        <div class="ic-date-bar">Monday, May 5 — Arrival Day</div>
+        <div class="ic-slots">
+          <div class="ic-slot"><span class="ic-slot-label">Morning:</span><span class="ic-slot-text">Flight arrives — transfer to <strong>Travelodge Covent Garden</strong> &amp; check in</span></div>
+          <div class="ic-slot"><span class="ic-slot-label">Afternoon:</span><span class="ic-slot-text">Pick up Oyster card · Rest &amp; freshen up</span></div>
+          <div class="ic-slot"><span class="ic-slot-label">Evening:</span><span class="ic-slot-text">Gentle walk along the <strong>Embankment</strong> or through <strong>Covent Garden</strong> · Dinner nearby</span></div>
+        </div>
+      </td></tr>
+
+      <tr><td class="ic-day-cell"><div class="ic-day-inner style-b">Day 2</div></td><td class="ic-body-cell">
+        <div class="ic-date-bar">Tuesday, May 6 — Museums &amp; Harry Potter</div>
+        <div class="ic-slots">
+          <div class="ic-slot"><span class="ic-slot-label">Morning:</span><span class="ic-slot-text"><strong>British Museum</strong> — Rosetta Stone, Egyptian mummies, Assyrian reliefs (3–4 hrs, free)</span></div>
+          <div class="ic-slot"><span class="ic-slot-label">Afternoon:</span><span class="ic-slot-text"><strong>House of MinaLima</strong> — free Harry Potter graphic design gallery in Soho</span></div>
+          <div class="ic-slot"><span class="ic-slot-label">Evening:</span><span class="ic-slot-text">Dinner in Soho or Covent Garden</span></div>
+        </div>
+      </td></tr>
+
+      <tr><td class="ic-day-cell"><div class="ic-day-inner style-a">Day 3</div></td><td class="ic-body-cell">
+        <div class="ic-date-bar">Wednesday, May 7 — Castle &amp; Diagon Alley</div>
+        <div class="ic-slots">
+          <div class="ic-slot"><span class="ic-slot-label">Morning:</span><span class="ic-slot-text"><strong>Tower of London</strong> — Crown Jewels, Beefeater guided tour, the ravens (book in advance)</span></div>
+          <div class="ic-slot"><span class="ic-slot-label">Afternoon:</span><span class="ic-slot-text"><strong>Leadenhall Market</strong> — the Diagon Alley entrance from The Philosopher's Stone</span></div>
+          <div class="ic-slot"><span class="ic-slot-label">Evening:</span><span class="ic-slot-text">Explore the City of London or riverside walk</span></div>
+        </div>
+      </td></tr>
+
+      <tr><td class="ic-day-cell"><div class="ic-day-inner style-b">Day 4</div></td><td class="ic-body-cell">
+        <div class="ic-date-bar">Thursday, May 8 — Doctor Who Day</div>
+        <div class="ic-slots">
+          <div class="ic-slot"><span class="ic-slot-label">Morning:</span><span class="ic-slot-text"><strong>Brit Movie Tours Doctor Who Walking Tour</strong> — central London filming locations (book ahead)</span></div>
+          <div class="ic-slot"><span class="ic-slot-label">Afternoon:</span><span class="ic-slot-text"><strong>Forbidden Planet</strong> — 179 Shaftesbury Ave · massive Doctor Who section</span></div>
+          <div class="ic-slot"><span class="ic-slot-label">Evening:</span><span class="ic-slot-text"><strong>The Who Shop</strong> — Upton Park · world-class DW museum &amp; shop</span></div>
+        </div>
+      </td></tr>
+
+      <tr><td class="ic-day-cell"><div class="ic-day-inner style-a">Day 5</div></td><td class="ic-body-cell">
+        <div class="ic-date-bar">Friday, May 9 — South Kensington Museums</div>
+        <div class="ic-slots">
+          <div class="ic-slot"><span class="ic-slot-label">Morning:</span><span class="ic-slot-text"><strong>Natural History Museum</strong> — blue whale, dinosaur gallery (free — book timed entry)</span></div>
+          <div class="ic-slot"><span class="ic-slot-label">Afternoon:</span><span class="ic-slot-text"><strong>Victoria &amp; Albert Museum</strong> — art, design &amp; culture (free)</span></div>
+          <div class="ic-slot"><span class="ic-slot-label">Evening:</span><span class="ic-slot-text"><strong>Science Museum</strong> — flight hall &amp; interactive exhibits, or dinner nearby</span></div>
+        </div>
+      </td></tr>
+
+      <tr><td class="ic-day-cell"><div class="ic-day-inner style-c">Day 6</div></td><td class="ic-body-cell">
+        <div class="ic-date-bar">Saturday, May 10 — Day Trip: Windsor Castle ⚠️ Closed Tues &amp; Weds</div>
+        <div class="ic-slots">
+          <div class="ic-slot"><span class="ic-slot-label">Morning:</span><span class="ic-slot-text">Train from Waterloo or Paddington (~45 min) · Arrive Windsor</span></div>
+          <div class="ic-slot"><span class="ic-slot-label">Afternoon:</span><span class="ic-slot-text"><strong>Windsor Castle</strong> — State Apartments, St George's Chapel, audio guide &amp; grounds</span></div>
+          <div class="ic-slot"><span class="ic-slot-label">Evening:</span><span class="ic-slot-text">Lunch in Windsor town · Return train to London</span></div>
+        </div>
+      </td></tr>
+
+      <tr><td class="ic-day-cell"><div class="ic-day-inner style-a">Day 7</div></td><td class="ic-body-cell">
+        <div class="ic-date-bar">Sunday, May 11 — Rest &amp; Culture</div>
+        <div class="ic-slots">
+          <div class="ic-slot"><span class="ic-slot-label">Morning:</span><span class="ic-slot-text">Slow start · Leisurely breakfast near the hotel</span></div>
+          <div class="ic-slot"><span class="ic-slot-label">Afternoon:</span><span class="ic-slot-text"><strong>National Gallery</strong> — Van Gogh, da Vinci, Rembrandt, Monet (free)</span></div>
+          <div class="ic-slot"><span class="ic-slot-label">Evening:</span><span class="ic-slot-text">Southbank walk or explore Covent Garden</span></div>
+        </div>
+      </td></tr>
+
+      <tr><td class="ic-day-cell"><div class="ic-day-inner style-c">Day 8</div></td><td class="ic-body-cell">
+        <div class="ic-date-bar">Monday, May 12 — Day Trip: Cardiff (Doctor Who Country)</div>
+        <div class="ic-slots">
+          <div class="ic-slot"><span class="ic-slot-label">Morning:</span><span class="ic-slot-text">Train from Paddington to Cardiff (~2 hrs)</span></div>
+          <div class="ic-slot"><span class="ic-slot-label">Afternoon:</span><span class="ic-slot-text"><strong>Roald Dahl Plass</strong> · <strong>Cardiff Castle</strong> · Walk Doctor Who filming locations</span></div>
+          <div class="ic-slot"><span class="ic-slot-label">Evening:</span><span class="ic-slot-text"><strong>National Museum Cardiff</strong> (free) · Return train to London</span></div>
+        </div>
+      </td></tr>
+
+      <tr><td class="ic-day-cell"><div class="ic-day-inner style-b">Day 9</div></td><td class="ic-body-cell">
+        <div class="ic-date-bar">Tuesday, May 13 — Day Trip: Gloucester Cathedral</div>
+        <div class="ic-slots">
+          <div class="ic-slot"><span class="ic-slot-label">Morning:</span><span class="ic-slot-text">Train from London to Gloucester (~2 hrs)</span></div>
+          <div class="ic-slot"><span class="ic-slot-label">Afternoon:</span><span class="ic-slot-text"><strong>Gloucester Cathedral</strong> — Hogwarts corridor cloisters from films 1 &amp; 2 (free)</span></div>
+          <div class="ic-slot"><span class="ic-slot-label">Evening:</span><span class="ic-slot-text">Optional: <strong>Cheltenham</strong> stroll · Return to London</span></div>
+        </div>
+      </td></tr>
+
+      <tr><td class="ic-day-cell"><div class="ic-day-inner style-a">Day 10</div></td><td class="ic-body-cell">
+        <div class="ic-date-bar">Wednesday, May 14 — Platform 9¾ &amp; Museums</div>
+        <div class="ic-slots">
+          <div class="ic-slot"><span class="ic-slot-label">Morning:</span><span class="ic-slot-text"><strong>Platform 9¾</strong> at King's Cross · house scarves &amp; wands · <strong>Harry Potter Shop</strong></span></div>
+          <div class="ic-slot"><span class="ic-slot-label">Afternoon:</span><span class="ic-slot-text"><strong>Science Museum</strong> — if not visited on Day 5</span></div>
+          <div class="ic-slot"><span class="ic-slot-label">Evening:</span><span class="ic-slot-text">Dinner in Bloomsbury</span></div>
+        </div>
+      </td></tr>
+
+      <tr><td class="ic-day-cell"><div class="ic-day-inner style-c">Day 11</div></td><td class="ic-body-cell">
+        <div class="ic-date-bar">Thursday, May 15 — Day Trip: Castle Day</div>
+        <div class="ic-slots">
+          <div class="ic-slot"><span class="ic-slot-label">Morning:</span><span class="ic-slot-text">Train to <strong>Leeds Castle</strong> (Kent, ~1 hr + shuttle) or <strong>Hever Castle</strong> (~1.5 hrs)</span></div>
+          <div class="ic-slot"><span class="ic-slot-label">Afternoon:</span><span class="ic-slot-text">Full castle day — maze &amp; falconry at Leeds, or Anne Boleyn's gardens at Hever</span></div>
+          <div class="ic-slot"><span class="ic-slot-label">Evening:</span><span class="ic-slot-text">Return train to London · Rest</span></div>
+        </div>
+      </td></tr>
+
+      <tr><td class="ic-day-cell"><div class="ic-day-inner style-b">Day 12</div></td><td class="ic-body-cell">
+        <div class="ic-date-bar">Friday, May 16 — Flex Day</div>
+        <div class="ic-slots">
+          <div class="ic-slot"><span class="ic-slot-label">Morning:</span><span class="ic-slot-text">Optional: River boat to <strong>Greenwich</strong> — Royal Observatory &amp; Prime Meridian</span></div>
+          <div class="ic-slot"><span class="ic-slot-label">Afternoon:</span><span class="ic-slot-text"><strong>Notting Hill</strong> &amp; Portobello Road Market — or revisit a favourite</span></div>
+          <div class="ic-slot"><span class="ic-slot-label">Evening:</span><span class="ic-slot-text"><strong>Borough Market</strong> — London's finest food market, near London Bridge</span></div>
+        </div>
+      </td></tr>
+
+      <tr><td class="ic-day-cell"><div class="ic-day-inner style-a">Day 13</div></td><td class="ic-body-cell">
+        <div class="ic-date-bar">Saturday, May 17 — Final London Day</div>
+        <div class="ic-slots">
+          <div class="ic-slot"><span class="ic-slot-label">Morning:</span><span class="ic-slot-text">Last-minute sights or souvenir shopping near Covent Garden</span></div>
+          <div class="ic-slot"><span class="ic-slot-label">Afternoon:</span><span class="ic-slot-text">Walk the <strong>Embankment</strong> — Westminster Bridge to Tower Bridge</span></div>
+          <div class="ic-slot"><span class="ic-slot-label">Evening:</span><span class="ic-slot-text">Farewell dinner · Pack &amp; prepare for departure</span></div>
+        </div>
+      </td></tr>
+
+      <tr><td class="ic-day-cell"><div class="ic-day-inner style-b">Day 14</div></td><td class="ic-body-cell">
+        <div class="ic-date-bar">Sunday, May 18 — Departure</div>
+        <div class="ic-slots">
+          <div class="ic-slot"><span class="ic-slot-label">Morning:</span><span class="ic-slot-text">Final breakfast · Check out of hotel</span></div>
+          <div class="ic-slot"><span class="ic-slot-label">Afternoon:</span><span class="ic-slot-text">Elizabeth line to Heathrow · Check in for flight home</span></div>
+          <div class="ic-slot"><span class="ic-slot-label">Evening:</span><span class="ic-slot-text">Depart London — safe travels! ✈️</span></div>
+        </div>
+      </td></tr>
+
+    </tbody></table>
+  </div>
+  <footer><p>Created with love for two adventurers heading to London ✦ May 2025</p></footer>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════════════
+     VIEW 3 — DAY MAPS
+════════════════════════════════════════════════════════════════════ -->
+<div id="view-daymap" class="view">
+  <div class="dm-wrap">
+    <p class="dm-intro">Tap any day to expand · Maps show routes between each stop</p>
+    <div id="dm-container"></div>
+  </div>
+  <footer><p>Created with love for two adventurers heading to London ✦ May 2025</p></footer>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════════════
+     SCRIPTS
+════════════════════════════════════════════════════════════════════ -->
+<script>
+/* ── Tab switching ── */
+function switchTab(id, btn) {
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('view-'+id).classList.add('active');
+  btn.classList.add('active');
+  if (id==='daymap' && !dayMapsBuilt) buildDayMaps();
+}
+
+/* ── Checklist ── */
+const STORAGE_KEY = 'london-2025-lt';
+function saveState(){
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify([...document.querySelectorAll('input[type="checkbox"]')].map(b=>b.checked)));}catch(e){}
+}
+function loadState(){
+  try{
+    const s=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');
+    document.querySelectorAll('input[type="checkbox"]').forEach((b,i)=>{if(s[i]){b.checked=true;b.closest('.check-item').classList.add('done');}});
+  }catch(e){}
+}
+function updateProgress(){
+  const all=document.querySelectorAll('input[type="checkbox"]');
+  const done=[...all].filter(b=>b.checked).length;
+  document.getElementById('progress-text').textContent=`${done} of ${all.length} checked`;
+  document.getElementById('progress-fill').style.width=(all.length?Math.round(done/all.length*100):0)+'%';
+}
+function resetAll(){
+  if(!confirm('Reset all checkboxes?'))return;
+  document.querySelectorAll('input[type="checkbox"]').forEach(b=>{b.checked=false;b.closest('.check-item').classList.remove('done');});
+  try{localStorage.removeItem(STORAGE_KEY);}catch(e){}
+  updateProgress();
+}
+document.querySelectorAll('.check-item').forEach(item=>{
+  item.querySelector('input').addEventListener('change',e=>{item.classList.toggle('done',e.target.checked);saveState();updateProgress();});
+});
+loadState();updateProgress();
+
+/* ── Location data ── */
+const CAT_COLORS={museum:'#3a6fb5',dw:'#2a7d5a',hp:'#a07828',castle:'#8b1f1f',daytrip:'#6b41a8',hotel:'#4a3f35'};
+const CAT_LABELS={museum:'Museum',dw:'Doctor Who',hp:'Harry Potter',castle:'Castle',daytrip:'Day Trip',hotel:'Home Base'};
+const ALL_LOCS=[
+  {name:'Travelodge Covent Garden',lat:51.5148,lng:-0.1218,cat:'hotel',  day:'Home Base',icon:'🏨',note:'10 Drury Lane, WC2B 5RE'},
+  {name:'British Museum',          lat:51.5194,lng:-0.1270,cat:'museum', day:'Day 2',    icon:'🏛',note:'Free — allow 3–4 hrs'},
+  {name:'House of MinaLima',       lat:51.5145,lng:-0.1349,cat:'hp',     day:'Day 2',    icon:'⚡',note:'Free HP graphic design gallery'},
+  {name:'Tower of London',         lat:51.5081,lng:-0.0759,cat:'castle', day:'Day 3',    icon:'🏰',note:'Book in advance — Crown Jewels & Beefeater tour'},
+  {name:'Leadenhall Market',       lat:51.5128,lng:-0.0835,cat:'hp',     day:'Day 3',    icon:'⚡',note:"Diagon Alley entrance from Philosopher's Stone"},
+  {name:'Brit Movie Tours (DW)',   lat:51.5143,lng:-0.1118,cat:'dw',     day:'Day 4',    icon:'🚀',note:'Book ahead — filming locations walk'},
+  {name:'Forbidden Planet',        lat:51.5151,lng:-0.1273,cat:'dw',     day:'Day 4',    icon:'🚀',note:'179 Shaftesbury Ave'},
+  {name:'The Who Shop',            lat:51.5307,lng: 0.0399,cat:'dw',     day:'Day 4',    icon:'🚀',note:'Upton Park — world-class DW museum & shop'},
+  {name:'Natural History Museum',  lat:51.4967,lng:-0.1764,cat:'museum', day:'Day 5',    icon:'🦕',note:'Free — book timed tickets'},
+  {name:'Victoria & Albert Museum',lat:51.4966,lng:-0.1722,cat:'museum', day:'Day 5',    icon:'🏺',note:'Free — art & design'},
+  {name:'Science Museum',          lat:51.4972,lng:-0.1767,cat:'museum', day:'Day 5',    icon:'🔭',note:'Free — great flight hall'},
+  {name:'Windsor Castle',          lat:51.4839,lng:-0.6044,cat:'daytrip',day:'Day 6',    icon:'🏰',note:'45 min from Waterloo — CLOSED Tues & Weds'},
+  {name:'National Gallery',        lat:51.5089,lng:-0.1283,cat:'museum', day:'Day 7',    icon:'🖼', note:'Free — Van Gogh, da Vinci, Rembrandt'},
+  {name:'Roald Dahl Plass, Cardiff',lat:51.4636,lng:-3.1631,cat:'daytrip',day:'Day 8',   icon:'🚀',note:'Iconic Doctor Who location'},
+  {name:'Cardiff Castle',          lat:51.4817,lng:-3.1815,cat:'daytrip',day:'Day 8',    icon:'🏰',note:'Doctor Who location'},
+  {name:'National Museum Cardiff', lat:51.4857,lng:-3.1768,cat:'daytrip',day:'Day 8',    icon:'🏛', note:'Free museum'},
+  {name:'Gloucester Cathedral',    lat:51.8673,lng:-2.2467,cat:'daytrip',day:'Day 9',    icon:'⚡',note:'Hogwarts cloisters — free entry'},
+  {name:"Platform 9¾",            lat:51.5322,lng:-0.1241,cat:'hp',     day:'Day 10',   icon:'⚡',note:"King's Cross — weekday mornings are quietest"},
+  {name:"HP Shop King's Cross",    lat:51.5323,lng:-0.1240,cat:'hp',     day:'Day 10',   icon:'⚡',note:'Exclusive items'},
+  {name:'Leeds Castle',            lat:51.2487,lng: 0.6298,cat:'daytrip',day:'Day 11',   icon:'🏰',note:'Moated castle — maze, falconry'},
+  {name:'Hever Castle',            lat:51.1869,lng: 0.1139,cat:'daytrip',day:'Day 11',   icon:'🏰',note:"Anne Boleyn's home"},
+];
+
+/* ── Overview Map ── */
+let overviewMap, markersAll=[];
+function makePin(cat){
+  const c=CAT_COLORS[cat]||'#888';
+  if(cat==='hotel'){
+    const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+      <filter id="hsh"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity=".18"/></filter>
+      <circle cx="18" cy="18" r="15" fill="#fff" stroke="${c}" stroke-width="2.5" filter="url(#hsh)"/>
+      <text x="18" y="23" text-anchor="middle" font-size="13">🏨</text></svg>`;
+    return L.divIcon({html:svg,className:'',iconSize:[36,36],iconAnchor:[18,18],popupAnchor:[0,-20]});
+  }
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="28" height="38" viewBox="0 0 28 38">
+    <filter id="psh"><feDropShadow dx="0" dy="2" stdDeviation="1.8" flood-opacity=".2"/></filter>
+    <ellipse cx="14" cy="36" rx="5" ry="2" fill="rgba(0,0,0,.12)"/>
+    <path d="M14 1C7.4 1 2 6.4 2 13c0 8.5 12 25 12 25s12-16.5 12-25C26 6.4 20.6 1 14 1Z"
+          fill="${c}" stroke="rgba(255,255,255,.5)" stroke-width="1.2" filter="url(#psh)"/>
+    <circle cx="14" cy="13" r="5" fill="rgba(255,255,255,.35)"/>
+  </svg>`;
+  return L.divIcon({html:svg,className:'',iconSize:[28,38],iconAnchor:[14,38],popupAnchor:[0,-40]});
+}
+
+window.addEventListener('load',()=>{
+  overviewMap=L.map('overview-map',{center:[51.505,-0.09],zoom:11});
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+    {attribution:'&copy; OpenStreetMap &copy; CARTO',subdomains:'abcd',maxZoom:19}).addTo(overviewMap);
+  ALL_LOCS.forEach(loc=>{
+    const m=L.marker([loc.lat,loc.lng],{icon:makePin(loc.cat)});
+    m.bindPopup(`<div class="popup-inner">
+      <div class="popup-cat popup-cat-${loc.cat}">${CAT_LABELS[loc.cat]}</div>
+      <div class="popup-name">${loc.icon} ${loc.name}</div>
+      <div class="popup-day">${loc.day}</div>
+      ${loc.note?`<div class="popup-note">${loc.note}</div>`:''}
+    </div>`,{maxWidth:250});
+    m._cat=loc.cat;m.addTo(overviewMap);markersAll.push(m);
+  });
+  overviewMap.fitBounds(L.latLngBounds(markersAll.map(m=>m.getLatLng())),{padding:[36,36]});
+});
+
+function filterMap(cat){
+  document.querySelectorAll('.map-filter-btn').forEach(b=>
+    b.classList.toggle('active',b.classList.contains('mf-'+cat)||(cat==='all'&&b.classList.contains('mf-all')))
+  );
+  markersAll.forEach(m=>{
+    const show=cat==='all'||m._cat===cat||m._cat==='hotel';
+    show?(!overviewMap.hasLayer(m)&&m.addTo(overviewMap)):(overviewMap.hasLayer(m)&&overviewMap.removeLayer(m));
+  });
+  const vis=markersAll.filter(m=>cat==='all'||m._cat===cat||m._cat==='hotel');
+  if(vis.length)overviewMap.fitBounds(L.latLngBounds(vis.map(m=>m.getLatLng())),{padding:[46,46]});
+}
+
+/* ── Day Maps ── */
+let dayMapsBuilt=false;
+const dayMapRefs={};
+const DAY_DATA=[
+  {num:1,date:'Monday, May 5',title:'Arrival Day',note:'Getting settled — no major attractions today.',
+   stops:[{name:'Travelodge Covent Garden',lat:51.5148,lng:-0.1218,icon:'🏨',time:'Arrival',note:'10 Drury Lane WC2B 5RE'},
+          {name:'Embankment',lat:51.5073,lng:-0.1215,icon:'🌉',time:'Evening',note:'Gentle first evening walk'}]},
+  {num:2,date:'Tuesday, May 6',title:'British Museum + House of MinaLima',
+   stops:[{name:'Travelodge Covent Garden',lat:51.5148,lng:-0.1218,icon:'🏨',time:'Start'},
+          {name:'British Museum',lat:51.5194,lng:-0.1270,icon:'🏛',time:'Morning',note:'Free — 3–4 hrs, book timed entry'},
+          {name:'House of MinaLima',lat:51.5145,lng:-0.1349,icon:'⚡',time:'Afternoon',note:'Free HP gallery — Wardour St, Soho'}]},
+  {num:3,date:'Wednesday, May 7',title:'Tower of London + Leadenhall Market',
+   stops:[{name:'Travelodge Covent Garden',lat:51.5148,lng:-0.1218,icon:'🏨',time:'Start'},
+          {name:'Tower of London',lat:51.5081,lng:-0.0759,icon:'🏰',time:'Morning',note:'Book in advance — Crown Jewels & Beefeater tour'},
+          {name:'Leadenhall Market',lat:51.5128,lng:-0.0835,icon:'⚡',time:'Afternoon',note:"Diagon Alley entrance from Philosopher's Stone"}]},
+  {num:4,date:'Thursday, May 8',title:'Doctor Who Day',
+   stops:[{name:'Travelodge Covent Garden',lat:51.5148,lng:-0.1218,icon:'🏨',time:'Start'},
+          {name:'Brit Movie Tours (DW Walk)',lat:51.5143,lng:-0.1118,icon:'🚀',time:'Morning',note:'Book ahead — filming locations walk'},
+          {name:'Forbidden Planet',lat:51.5151,lng:-0.1273,icon:'🚀',time:'Afternoon',note:'179 Shaftesbury Ave'},
+          {name:'The Who Shop',lat:51.5307,lng:0.0399,icon:'🚀',time:'Evening',note:'Upton Park — DW museum & shop'}]},
+  {num:5,date:'Friday, May 9',title:'South Kensington Museum Cluster',
+   stops:[{name:'Travelodge Covent Garden',lat:51.5148,lng:-0.1218,icon:'🏨',time:'Start'},
+          {name:'Natural History Museum',lat:51.4967,lng:-0.1764,icon:'🦕',time:'Morning',note:'Free — book timed entry'},
+          {name:'Victoria & Albert Museum',lat:51.4966,lng:-0.1722,icon:'🏺',time:'Afternoon',note:'Free'},
+          {name:'Science Museum',lat:51.4972,lng:-0.1767,icon:'🔭',time:'Evening',note:'Free'}]},
+  {num:6,date:'Saturday, May 10',title:'Day Trip — Windsor Castle',note:'⚠️ Windsor is CLOSED Tuesdays & Wednesdays.',
+   stops:[{name:'London Waterloo Station',lat:51.5031,lng:-0.1132,icon:'🚂',time:'Morning',note:'~45 min train to Windsor'},
+          {name:'Windsor Castle',lat:51.4839,lng:-0.6044,icon:'🏰',time:'All Day',note:"State Apartments & St George's Chapel"}]},
+  {num:7,date:'Sunday, May 11',title:'Rest Day — National Gallery',
+   stops:[{name:'Travelodge Covent Garden',lat:51.5148,lng:-0.1218,icon:'🏨',time:'Start'},
+          {name:'National Gallery',lat:51.5089,lng:-0.1283,icon:'🖼',time:'Afternoon',note:'Free — Van Gogh, da Vinci, Rembrandt'},
+          {name:'Southbank',lat:51.5063,lng:-0.1173,icon:'☀️',time:'Evening',note:'River walk'}]},
+  {num:8,date:'Monday, May 12',title:'Day Trip — Cardiff (Doctor Who)',note:'Download a Doctor Who Cardiff filming locations map before you go.',
+   stops:[{name:'London Paddington',lat:51.5154,lng:-0.1755,icon:'🚂',time:'Morning',note:'~2 hrs to Cardiff Central'},
+          {name:'Roald Dahl Plass',lat:51.4636,lng:-3.1631,icon:'🚀',time:'Afternoon',note:'Iconic Doctor Who location'},
+          {name:'Cardiff Castle',lat:51.4817,lng:-3.1815,icon:'🏰',time:'Afternoon'},
+          {name:'National Museum Cardiff',lat:51.4857,lng:-3.1768,icon:'🏛',time:'Evening',note:'Free museum'}]},
+  {num:9,date:'Tuesday, May 13',title:'Day Trip — Gloucester Cathedral',
+   stops:[{name:'London Paddington',lat:51.5154,lng:-0.1755,icon:'🚂',time:'Morning',note:'~2 hrs to Gloucester'},
+          {name:'Gloucester Cathedral',lat:51.8673,lng:-2.2467,icon:'⚡',time:'Afternoon',note:'Hogwarts cloisters — free entry'}]},
+  {num:10,date:'Wednesday, May 14',title:"Platform 9¾ + Science Museum",
+   stops:[{name:'Travelodge Covent Garden',lat:51.5148,lng:-0.1218,icon:'🏨',time:'Start'},
+          {name:"Platform 9¾ — King's Cross",lat:51.5322,lng:-0.1241,icon:'⚡',time:'Morning',note:'Weekday mornings are quietest'},
+          {name:'Harry Potter Shop',lat:51.5323,lng:-0.1240,icon:'⚡',time:'Morning',note:'Exclusive items'},
+          {name:'Science Museum',lat:51.4972,lng:-0.1767,icon:'🔭',time:'Afternoon'}]},
+  {num:11,date:'Thursday, May 15',title:'Day Trip — Castle Day',note:'Choose Leeds Castle or Hever Castle (both in Kent).',
+   stops:[{name:'London Bridge Station',lat:51.5054,lng:-0.0886,icon:'🚂',time:'Morning',note:'Train to Leeds (~1 hr) or Hever (~1.5 hrs)'},
+          {name:'Leeds Castle',lat:51.2487,lng:0.6298,icon:'🏰',time:'All Day',note:'Moated castle — maze, falconry'},
+          {name:'Hever Castle',lat:51.1869,lng:0.1139,icon:'🏰',time:'All Day',note:"Anne Boleyn's home"}]},
+  {num:12,date:'Friday, May 16',title:'Flex Day',
+   stops:[{name:'Travelodge Covent Garden',lat:51.5148,lng:-0.1218,icon:'🏨',time:'Start'},
+          {name:'Greenwich (optional)',lat:51.4769,lng:-0.0005,icon:'⚓',time:'Morning',note:'River boat from central London'},
+          {name:'Notting Hill (optional)',lat:51.5140,lng:-0.2008,icon:'🌸',time:'Afternoon',note:'Portobello Road Market'},
+          {name:'Borough Market (optional)',lat:51.5055,lng:-0.0910,icon:'🧀',time:'Evening',note:"London's finest food market"}]},
+  {num:13,date:'Saturday, May 17',title:'Final London Day',
+   stops:[{name:'Travelodge Covent Garden',lat:51.5148,lng:-0.1218,icon:'🏨',time:'Start'},
+          {name:'Westminster Bridge',lat:51.5007,lng:-0.1246,icon:'🌉',time:'Afternoon',note:'Start of farewell Embankment walk'},
+          {name:'Tower Bridge',lat:51.5055,lng:-0.0754,icon:'🌉',time:'Afternoon',note:'End of the walk'}]},
+  {num:14,date:'Sunday, May 18',title:'Departure',
+   stops:[{name:'Travelodge Covent Garden',lat:51.5148,lng:-0.1218,icon:'🏨',time:'Morning',note:'Check out'},
+          {name:'Heathrow Airport',lat:51.4694,lng:-0.4503,icon:'✈️',time:'Afternoon',note:'Elizabeth line from central London'}]},
+];
+
+function makeNumPin(n, color){
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="28" height="38" viewBox="0 0 28 38">
+    <filter id="np${n}"><feDropShadow dx="0" dy="2" stdDeviation="1.8" flood-opacity=".2"/></filter>
+    <ellipse cx="14" cy="36" rx="5" ry="2" fill="rgba(0,0,0,.12)"/>
+    <path d="M14 1C7.4 1 2 6.4 2 13c0 8.5 12 25 12 25s12-16.5 12-25C26 6.4 20.6 1 14 1Z"
+          fill="${color}" stroke="rgba(255,255,255,.5)" stroke-width="1" filter="url(#np${n})"/>
+    <text x="14" y="17" text-anchor="middle" dominant-baseline="middle"
+          font-family="monospace" font-size="11" font-weight="700" fill="white">${n}</text>
+  </svg>`;
+  return L.divIcon({html:svg,className:'',iconSize:[28,38],iconAnchor:[14,38],popupAnchor:[0,-40]});
+}
+
+async function drawRoute(map,stops){
+  if(stops.length<2)return;
+  const coords=stops.map(s=>`${s.lng},${s.lat}`).join(';');
+  try{
+    const r=await fetch(`https://router.project-osrm.org/route/v1/foot/${coords}?overview=full&geometries=geojson`,
+      {signal:AbortSignal.timeout(7000)});
+    if(!r.ok)throw 0;
+    const d=await r.json();
+    if(d.routes?.[0]){
+      L.geoJSON(d.routes[0].geometry,{style:{color:'#a07828',weight:3,opacity:.7,dashArray:'7 5'}}).addTo(map);
+      return;
+    }
+  }catch(e){}
+  L.polyline(stops.map(s=>[s.lat,s.lng]),{color:'#a07828',weight:2.5,opacity:.6,dashArray:'7 5'}).addTo(map);
+}
+
+function buildDayMaps(){
+  dayMapsBuilt=true;
+  const container=document.getElementById('dm-container');
+  DAY_DATA.forEach(day=>{
+    const bodyId=`dmbody-${day.num}`, mapId=`dmmap-${day.num}`;
+    const wrap=document.createElement('div');
+    wrap.className='dm-day';
+    wrap.innerHTML=`
+      <div class="dm-day-header" onclick="toggleDay(${day.num})">
+        <div class="dm-day-num">${String(day.num).padStart(2,'0')}</div>
+        <div class="dm-day-info">
+          <span class="dm-day-date">${day.date}</span>
+          <span class="dm-day-title">${day.title}</span>
+        </div>
+        <span class="dm-toggle" id="tog-${day.num}">▼</span>
+      </div>
+      <div class="dm-day-body" id="${bodyId}" style="max-height:0;overflow:hidden;transition:max-height .35s ease;">
+        <div class="dm-inner">
+          <div class="dm-stops">
+            ${day.stops.map((s,i)=>`<span class="dm-stop">
+              <span class="dm-stop-num">${i+1}</span>
+              <span>${s.icon} ${s.name}</span>
+              <span style="font-family:'DM Mono',monospace;font-size:.7rem;color:var(--gold);opacity:.85">${s.time}</span>
+            </span>`).join('')}
+          </div>
+          ${day.note?`<div class="dm-note-box">${day.note}</div>`:''}
+          <div class="dm-map-el" id="${mapId}"></div>
+        </div>
+      </div>`;
+    container.appendChild(wrap);
+  });
+}
+
+const openState={};
+async function toggleDay(num){
+  const body=document.getElementById(`dmbody-${num}`);
+  const tog=document.getElementById(`tog-${num}`);
+  if(openState[num]){body.style.maxHeight='0';tog.textContent='▼';openState[num]=false;return;}
+  body.style.maxHeight='9999px';tog.textContent='▲';openState[num]=true;
+  if(!dayMapRefs[num]){
+    const day=DAY_DATA[num-1];
+    const mapEl=document.getElementById(`dmmap-${num}`);
+    const avg={lat:day.stops.reduce((a,s)=>a+s.lat,0)/day.stops.length,
+                lng:day.stops.reduce((a,s)=>a+s.lng,0)/day.stops.length};
+    const m=L.map(mapEl,{center:[avg.lat,avg.lng],zoom:13});
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+      {attribution:'&copy; OpenStreetMap &copy; CARTO',subdomains:'abcd',maxZoom:19}).addTo(m);
+    day.stops.forEach((s,i)=>{
+      L.marker([s.lat,s.lng],{icon:makeNumPin(i+1,i===0?'#999':CAT_COLORS.museum)})
+       .bindPopup(`<div class="popup-inner">
+         <div class="popup-name">${s.icon} ${s.name}</div>
+         <div class="popup-day">${s.time}</div>
+         ${s.note?`<div class="popup-note">${s.note}</div>`:''}
+       </div>`,{maxWidth:230}).addTo(m);
+    });
+    if(day.stops.length>1)m.fitBounds(L.latLngBounds(day.stops.map(s=>[s.lat,s.lng])),{padding:[38,38]});
+    drawRoute(m,day.stops);
+    dayMapRefs[num]=m;
+    setTimeout(()=>m.invalidateSize(),250);
+  }
+}
+</script>
+</body>
+</html>
