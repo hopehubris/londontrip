@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>London Itinerary: May 5–19, 2026</title>
+<style>
+:root {
+  --bg: #0f172a;
+  --panel: #111827;
+  --card: #ffffff;
+  --muted: #64748b;
+  --text: #0f172a;
+  --accent: #2563eb;
+  --accent2: #0ea5e9;
+  --soft: #f1f5f9;
+  --border: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; background: #f8fafc; color: var(--text); }
+.hero { background: linear-gradient(135deg, var(--bg), #1e3a8a); color: white; padding: 28px 18px; }
+.hero-inner { max-width: 1100px; margin: 0 auto; }
+.hero h1 { margin: 0 0 8px; font-size: clamp(28px, 5vw, 48px); letter-spacing: -0.03em; }
+.hero p { margin: 6px 0; color: #dbeafe; font-size: 16px; }
+.toolbar { position: sticky; top: 0; z-index: 20; background: rgba(255,255,255,.96); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); padding: 10px 14px; }
+.toolbar-inner { max-width: 1100px; margin: 0 auto; display: flex; gap: 8px; overflow-x: auto; align-items: center; }
+.filter { border: 1px solid var(--border); background: white; color: var(--text); border-radius: 999px; padding: 8px 12px; white-space: nowrap; cursor: pointer; font-size: 14px; }
+.filter.active { background: var(--accent); color: white; border-color: var(--accent); }
+main { max-width: 1100px; margin: 0 auto; padding: 18px; }
+.notice { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 16px; padding: 14px 16px; margin-bottom: 18px; }
+.notice b { color: #9a3412; }
+.grid { display: grid; grid-template-columns: 1fr; gap: 18px; }
+.day-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(15,23,42,.06); }
+.day-head { padding: 18px 18px 10px; display: grid; gap: 8px; }
+.date { color: var(--accent); font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: .04em; }
+.day-title { margin: 0; font-size: 24px; letter-spacing: -0.02em; }
+.badges { display: flex; gap: 8px; flex-wrap: wrap; }
+.badge { background: var(--soft); border: 1px solid var(--border); border-radius: 999px; padding: 5px 9px; font-size: 12px; color: #334155; }
+.summary { color: #334155; margin: 0; line-height: 1.5; }
+.route { background: #f8fafc; margin: 10px 18px; border: 1px solid var(--border); border-radius: 14px; padding: 12px; color: #334155; font-size: 14px; line-height: 1.45; }
+.actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; padding: 0 18px 12px; }
+.btn { display: inline-flex; justify-content: center; align-items: center; min-height: 42px; border-radius: 12px; text-decoration: none; background: var(--accent); color: white; font-weight: 700; padding: 10px 12px; text-align: center; }
+.btn.secondary { background: #e0f2fe; color: #075985; }
+.schedule { padding: 0 18px 8px; }
+.row { display: grid; grid-template-columns: 120px 1fr; gap: 12px; border-top: 1px solid var(--border); padding: 12px 0; }
+.time { font-weight: 800; color: #0f172a; }
+.plan { color: #334155; line-height: 1.45; }
+.notes { padding: 0 18px 18px; }
+.notes h4 { margin: 10px 0 6px; }
+.notes ul { margin: 0; padding-left: 20px; color: #334155; line-height: 1.55; }
+.map { width: 100%; height: 320px; border: 0; border-top: 1px solid var(--border); display: block; }
+.sources { margin-top: 28px; background: white; border: 1px solid var(--border); border-radius: 20px; padding: 18px; color: #334155; }
+.sources h2 { margin-top: 0; }
+.sources li { margin: 7px 0; }
+@media (max-width: 640px) {
+  .row { grid-template-columns: 1fr; gap: 3px; }
+  .map { height: 260px; }
+  main { padding: 12px; }
+  .day-title { font-size: 21px; }
+}
+@media print {
+  .toolbar, .map, .actions { display: none; }
+  body { background: white; }
+  .day-card { break-inside: avoid; box-shadow: none; }
+}
+</style>
+</head>
+<body>
+<section class="hero">
+  <div class="hero-inner">
+    <h1>London Itinerary</h1>
+    <p><strong>May 5–19, 2026</strong> · Base: Travelodge London Central Covent Garden, 10 Drury Lane WC2B 5RE</p>
+    <p>Optimized for geography, realistic pacing, and fixed-day constraints.</p>
+  </div>
+</section>
+
+<nav class="toolbar">
+  <div class="toolbar-inner">
+    <button class="filter active" data-filter="all">All days</button>
+    <button class="filter" data-filter="Light">Light</button>
+    <button class="filter" data-filter="Moderate">Moderate</button>
+    <button class="filter" data-filter="Heavy">Heavy</button>
+    <button class="filter" data-filter="Day Trip">Day trips</button>
+  </div>
+</nav>
+
+<main>
+  <div class="notice"><b>Book first:</b> Sherlock Afternoon Tea, Jack the Ripper tour, The Who Shop Museum, Doctor Who Walk, Bridgerton Bath tour, Leeds Castle, Hever Castle. Use TfL/Citymapper day-of for live transit.</div>
+  <div class="grid" id="cards"></div>
+
+  <section class="sources">
+    <h2>Verification Notes</h2>
+    <ul>
+      <li>Travelodge confirms the Covent Garden hotel address as 10 Drury Lane, WC2B 5RE.</li>
+      <li>The Who Shop lists shop hours Monday–Saturday 09:30–17:30 and museum hours Thursday–Saturday 11:00–15:00, last entry 14:30, advance booking required.</li>
+      <li>British Museum lists daily opening 10:00–17:00 and Friday late opening until 20:30.</li>
+      <li>Natural History Museum lists daily opening 10:00–17:50, last entry 17:30.</li>
+      <li>Science Museum lists daily opening 10:00–18:00, last entry 17:15, and says an average visit lasts around two hours.</li>
+      <li>Jack the Ripper Museum lists daily opening 09:30–18:00 and walking tours daily at 15:00 and 17:00, lasting about 90 minutes.</li>
+      <li>National Gallery lists daily opening 10:00–18:00 and Friday until 21:00.</li>
+      <li>House of MinaLima London lists daily opening 11:00–18:45.</li>
+      <li>Sherlock Afternoon Tea is listed Thursday–Sunday between 12:00 and 15:30 with a 90-minute duration.</li>
+      <li>Brit Movie Tours describes the Doctor Who London Walk as a 2.5-hour walking tour; the Bridgerton tour result is Bath-based and two hours.</li>
+    </ul>
+  </section>
+</main>
+
+<script>
+const days = [{"date": "Tue May 5, 2026", "title": "Arrival + Covent Garden / Soho Orientation", "intensity": "Light", "summary": "Keep this easy. You are based in one of the best walking locations in London; use the day to settle in and clear nearby shopping/fandom stops.", "stops": ["Travelodge Covent Garden", "Covent Garden", "Pandora Covent Garden", "Forbidden Planet London", "House of MinaLima", "Leicester Square", "Travelodge Covent Garden"], "schedule": [["12:00–13:30", "Arrive / check bags / reset at hotel."], ["13:30–14:30", "Covent Garden wander + Pandora if desired."], ["14:45–15:30", "Forbidden Planet."], ["15:45–16:30", "House of MinaLima, Soho."], ["16:45–18:00", "Leicester Square / casual dinner nearby."]], "notes": ["No hard bookings today unless you want dinner reservations.", "House of MinaLima is a short Soho walk from the hotel; it is listed as open daily 11:00–18:45."], "map_url": "https://www.google.com/maps/dir/?api=1&origin=Travelodge+Covent+Garden&destination=Travelodge+Covent+Garden&waypoints=Covent+Garden|Pandora+Covent+Garden|Forbidden+Planet+London|House+of+MinaLima|Leicester+Square&travelmode=transit", "embed_url": "https://www.google.com/maps?q=Travelodge+Covent+Garden+to+Covent+Garden+to+Pandora+Covent+Garden+to+Forbidden+Planet+London+to+House+of+MinaLima+to+Leicester+Square+to+Travelodge+Covent+Garden&output=embed"}, {"date": "Wed May 6, 2026", "title": "Trafalgar Square + National Gallery + South Bank / London Eye", "intensity": "Moderate", "summary": "Classic central London loop from your hotel: Trafalgar, National Gallery, Westminster Bridge, London Eye and Thames waterfront.", "stops": ["Travelodge Covent Garden", "Trafalgar Square", "National Gallery", "Westminster Bridge", "London Eye", "South Bank", "Travelodge Covent Garden"], "schedule": [["09:15–09:45", "Walk from hotel to Trafalgar Square."], ["09:45–10:15", "Trafalgar Square photos and orientation."], ["10:15–12:45", "National Gallery. Focus on highlights; do not try to see everything."], ["12:45–13:45", "Lunch around Charing Cross / Embankment."], ["14:00–15:30", "Walk to Westminster Bridge and London Eye waterfront."], ["15:30–17:00", "South Bank stroll; book London Eye slot if you want the ride rather than just the waterfront."]], "notes": ["National Gallery general opening is daily 10:00–18:00, Friday until 21:00.", "Book London Eye only if you care about the actual ride; the waterfront walk is worthwhile either way."], "map_url": "https://www.google.com/maps/dir/?api=1&origin=Travelodge+Covent+Garden&destination=Travelodge+Covent+Garden&waypoints=Trafalgar+Square|National+Gallery|Westminster+Bridge|London+Eye|South+Bank&travelmode=transit", "embed_url": "https://www.google.com/maps?q=Travelodge+Covent+Garden+to+Trafalgar+Square+to+National+Gallery+to+Westminster+Bridge+to+London+Eye+to+South+Bank+to+Travelodge+Covent+Garden&output=embed"}, {"date": "Thu May 7, 2026", "title": "The Who Shop + East London Doctor Who Day", "intensity": "Moderate", "summary": "Use a Thursday because the museum portion of The Who Shop is Thursday–Saturday only. This is a specialist trip; keep the rest of the day lighter.", "stops": ["Travelodge Covent Garden", "Holborn Underground Station", "Upton Park Station", "The Who Shop", "Tower Bridge optional evening view", "Travelodge Covent Garden"], "schedule": [["09:30–10:30", "Tube to Upton Park via District/Piccadilly routing depending on live service."], ["11:00–12:30", "The Who Shop museum + shop."], ["12:30–13:30", "Lunch near Upton Park or return toward central London."], ["15:00–17:00", "Rest / free time."], ["Evening", "Optional: Tower Bridge or riverside night photos."]], "notes": ["The Who Shop itself is listed Monday–Saturday 09:30–17:30; museum Thursday–Saturday 11:00–15:00, last entry 14:30, advance booking required, cash noted for museum admission."], "map_url": "https://www.google.com/maps/dir/?api=1&origin=Travelodge+Covent+Garden&destination=Travelodge+Covent+Garden&waypoints=Holborn+Underground+Station|Upton+Park+Station|The+Who+Shop|Tower+Bridge+optional+evening+view&travelmode=transit", "embed_url": "https://www.google.com/maps?q=Travelodge+Covent+Garden+to+Holborn+Underground+Station+to+Upton+Park+Station+to+The+Who+Shop+to+Tower+Bridge+optional+evening+view+to+Travelodge+Covent+Garden&output=embed"}, {"date": "Fri May 8, 2026", "title": "British Museum + Bloomsbury + Optional Friday Late", "intensity": "Heavy", "summary": "This is your deep museum day. Friday is useful because the British Museum has late opening.", "stops": ["Travelodge Covent Garden", "British Museum", "Russell Square", "Seven Dials", "Travelodge Covent Garden"], "schedule": [["09:30–09:45", "Walk from hotel to British Museum."], ["10:00–13:00", "British Museum core highlights: Rosetta Stone, Parthenon Sculptures, Egyptian galleries, Assyrian reliefs."], ["13:00–14:00", "Lunch in Bloomsbury."], ["14:00–16:00", "Return for selected galleries or special exhibition."], ["Evening optional", "Use Friday late if you want a quieter second pass."]], "notes": ["British Museum is listed daily 10:00–17:00 and Friday until 20:30, with last entry 16:45 / Friday 20:15.", "Do not attempt the entire museum. Pick 5–6 priorities."], "map_url": "https://www.google.com/maps/dir/?api=1&origin=Travelodge+Covent+Garden&destination=Travelodge+Covent+Garden&waypoints=British+Museum|Russell+Square|Seven+Dials&travelmode=transit", "embed_url": "https://www.google.com/maps?q=Travelodge+Covent+Garden+to+British+Museum+to+Russell+Square+to+Seven+Dials+to+Travelodge+Covent+Garden&output=embed"}, {"date": "Sat May 9, 2026", "title": "Sherlock Afternoon Tea + Earl’s Court + Kensington Gardens", "intensity": "Moderate", "summary": "A west London day built around a timed Sherlock tea slot, with nearby Earl’s Court and Kensington Gardens.", "stops": ["Travelodge Covent Garden", "Sherlock Afternoon Tea at The Mind Palace, W12", "Earl's Court", "Kensington Gardens", "Peter Pan Statue", "Diana Memorial Playground", "Travelodge Covent Garden"], "schedule": [["10:00–11:00", "Tube to Shepherd’s Bush / Westfield area."], ["12:00–13:30", "Sherlock Afternoon Tea & Mini Mystery. Book ahead."], ["14:00–14:45", "Earl’s Court stop."], ["15:00–17:00", "Kensington Gardens: Peter Pan Statue + Diana Memorial Playground/Garden area."], ["Evening", "Return to Covent Garden for dinner."]], "notes": ["Visit London lists Sherlock afternoon tea Thursday–Sunday between 12:00 and 15:30, duration about 90 minutes.", "This day keeps you west, instead of zig-zagging across London."], "map_url": "https://www.google.com/maps/dir/?api=1&origin=Travelodge+Covent+Garden&destination=Travelodge+Covent+Garden&waypoints=Sherlock+Afternoon+Tea+at+The+Mind+Palace,+W12|Earl's+Court|Kensington+Gardens|Peter+Pan+Statue|Diana+Memorial+Playground&travelmode=transit", "embed_url": "https://www.google.com/maps?q=Travelodge+Covent+Garden+to+Sherlock+Afternoon+Tea+at+The+Mind+Palace,+W12+to+Earl's+Court+to+Kensington+Gardens+to+Peter+Pan+Statue+to+Diana+Memorial+Playground+to+Travelodge+Covent+Garden&output=embed"}, {"date": "Sun May 10, 2026", "title": "Natural History Museum + Science Museum", "intensity": "Very Heavy", "summary": "South Kensington museum cluster. It is convenient, but two major museums in one day is tiring. Skim one or split if energy is low.", "stops": ["Travelodge Covent Garden", "South Kensington Station", "Natural History Museum", "Science Museum", "South Kensington Station", "Travelodge Covent Garden"], "schedule": [["09:15–10:00", "Tube to South Kensington."], ["10:00–12:45", "Natural History Museum."], ["12:45–13:45", "Lunch on Exhibition Road / South Kensington."], ["14:00–16:30", "Science Museum. Prioritize 2–3 galleries."], ["17:00", "Return to hotel."]], "notes": ["Natural History Museum is listed daily 10:00–17:50, last entry 17:30.", "Science Museum is listed daily 10:00–18:00, last entry 17:15; average visit around two hours."], "map_url": "https://www.google.com/maps/dir/?api=1&origin=Travelodge+Covent+Garden&destination=Travelodge+Covent+Garden&waypoints=South+Kensington+Station|Natural+History+Museum|Science+Museum|South+Kensington+Station&travelmode=transit", "embed_url": "https://www.google.com/maps?q=Travelodge+Covent+Garden+to+South+Kensington+Station+to+Natural+History+Museum+to+Science+Museum+to+South+Kensington+Station+to+Travelodge+Covent+Garden&output=embed"}, {"date": "Mon May 11, 2026", "title": "Tower of London + Jack the Ripper Museum / Walking Tour", "intensity": "Heavy", "summary": "History-heavy East London day with a built-in afternoon break before the Ripper tour.", "stops": ["Travelodge Covent Garden", "Tower Hill Station", "Tower of London", "Jack the Ripper Museum", "Whitechapel / Aldgate East", "Travelodge Covent Garden"], "schedule": [["08:45–09:30", "Tube/taxi to Tower Hill."], ["09:30–13:30", "Tower of London. Go early; Crown Jewels first."], ["13:30–15:00", "Lunch + decompression."], ["15:30–16:45", "Jack the Ripper Museum."], ["17:00–18:30", "Jack the Ripper walking tour from the museum."], ["Evening", "Dinner around Spitalfields / return to hotel."]], "notes": ["Jack the Ripper Museum is listed daily 09:30–18:00; tours are listed daily at 15:00 and 17:00, lasting about 90 minutes.", "Tower date-based hours should be checked before ticket purchase; the official site notes May 2026 closure/entry changes around specific dates."], "map_url": "https://www.google.com/maps/dir/?api=1&origin=Travelodge+Covent+Garden&destination=Travelodge+Covent+Garden&waypoints=Tower+Hill+Station|Tower+of+London|Jack+the+Ripper+Museum|Whitechapel+/+Aldgate+East&travelmode=transit", "embed_url": "https://www.google.com/maps?q=Travelodge+Covent+Garden+to+Tower+Hill+Station+to+Tower+of+London+to+Jack+the+Ripper+Museum+to+Whitechapel+/+Aldgate+East+to+Travelodge+Covent+Garden&output=embed"}, {"date": "Tue May 12, 2026", "title": "Doctor Who Walking Tour + London Bridge / Southwark", "intensity": "Moderate", "summary": "Reserve this for the Brit Movie Tours Doctor Who London Walk if there is a public tour date that fits. Otherwise treat it as a Southwark/London Bridge day.", "stops": ["Travelodge Covent Garden", "London Bridge Station", "Doctor Who London Walk meeting area", "Borough Market", "Millennium Bridge", "Travelodge Covent Garden"], "schedule": [["Morning", "Transit to London Bridge area."], ["Tour slot", "Doctor Who London Walk, listed as about 2.5 hours."], ["After tour", "Borough Market / Southwark walk."], ["Late afternoon", "Return via river or Tube."]], "notes": ["Brit Movie Tours describes the Doctor Who London Walk as a 2.5 hour walking tour starting from the London Bridge area via reseller descriptions; book only after confirming the exact 2026 public date/time."], "map_url": "https://www.google.com/maps/dir/?api=1&origin=Travelodge+Covent+Garden&destination=Travelodge+Covent+Garden&waypoints=London+Bridge+Station|Doctor+Who+London+Walk+meeting+area|Borough+Market|Millennium+Bridge&travelmode=transit", "embed_url": "https://www.google.com/maps?q=Travelodge+Covent+Garden+to+London+Bridge+Station+to+Doctor+Who+London+Walk+meeting+area+to+Borough+Market+to+Millennium+Bridge+to+Travelodge+Covent+Garden&output=embed"}, {"date": "Wed May 13, 2026", "title": "Leeds Castle Day Trip", "intensity": "Heavy Day Trip", "summary": "Full-day Kent castle day. Do not add another major stop.", "stops": ["Travelodge Covent Garden", "London Victoria Station", "Bearsted Station", "Leeds Castle", "Bearsted Station", "London Victoria Station", "Travelodge Covent Garden"], "schedule": [["08:00–09:15", "Travel to London Victoria and train toward Bearsted."], ["10:00–15:30", "Leeds Castle grounds, castle, lunch, gardens."], ["15:30–17:30", "Return to London."], ["Evening", "Low-effort dinner near hotel."]], "notes": ["Leeds Castle summer pattern is grounds roughly 10:00–18:00, castle roughly 10:30–17:30, last castle entry around 17:00 per regional listing; check official date before booking train/tickets.", "This is a day trip, not a half day."], "map_url": "https://www.google.com/maps/dir/?api=1&origin=Travelodge+Covent+Garden&destination=Travelodge+Covent+Garden&waypoints=London+Victoria+Station|Bearsted+Station|Leeds+Castle|Bearsted+Station|London+Victoria+Station&travelmode=transit", "embed_url": "https://www.google.com/maps?q=Travelodge+Covent+Garden+to+London+Victoria+Station+to+Bearsted+Station+to+Leeds+Castle+to+Bearsted+Station+to+London+Victoria+Station+to+Travelodge+Covent+Garden&output=embed"}, {"date": "Thu May 14, 2026", "title": "Hever Castle Day Trip", "intensity": "Heavy Day Trip", "summary": "Anne Boleyn/Tudor castle day. Slower logistics than central London, so protect the day.", "stops": ["Travelodge Covent Garden", "London Bridge Station", "Hever Station", "Hever Castle & Gardens", "Hever Station", "London Bridge Station", "Travelodge Covent Garden"], "schedule": [["08:00–09:45", "Travel to Hever via London Bridge/Edenbridge/Hever routing depending on live rail."], ["10:30–16:00", "Hever Castle & Gardens."], ["16:00–18:00", "Return to London."], ["Evening", "Free."]], "notes": ["Hever’s main season listing shows grounds opening around 10:30 and castle around 12:00 with later garden/castle closing in the summer season.", "Confirm train options the day before; rural station/taxi/walk timing matters."], "map_url": "https://www.google.com/maps/dir/?api=1&origin=Travelodge+Covent+Garden&destination=Travelodge+Covent+Garden&waypoints=London+Bridge+Station|Hever+Station|Hever+Castle+&+Gardens|Hever+Station|London+Bridge+Station&travelmode=transit", "embed_url": "https://www.google.com/maps?q=Travelodge+Covent+Garden+to+London+Bridge+Station+to+Hever+Station+to+Hever+Castle+&+Gardens+to+Hever+Station+to+London+Bridge+Station+to+Travelodge+Covent+Garden&output=embed"}, {"date": "Fri May 15, 2026", "title": "Bath Day Trip for Bridgerton Walking Tour", "intensity": "Heavy Day Trip", "summary": "This is the logical home for the Brit Movie Tours Bridgerton walking tour because the official tour result is Bath-based.", "stops": ["Travelodge Covent Garden", "London Paddington Station", "Bath Spa Station", "Bridgerton Tour Bath", "Royal Crescent", "Bath Spa Station", "London Paddington Station", "Travelodge Covent Garden"], "schedule": [["07:45–09:30", "Travel to Bath Spa from Paddington."], ["10:30–12:30", "Brit Movie Tours Bridgerton Tour / Bath city highlights if available."], ["12:30–14:00", "Lunch in Bath."], ["14:00–16:30", "Royal Crescent / Holburne Museum exterior / city walk."], ["17:00–19:00", "Return to London."]], "notes": ["Brit Movie Tours lists the Bridgerton tour as a two-hour walking tour in Bath, not central London.", "If you do not care enough about Bridgerton to spend a day on it, replace this with a London recovery day."], "map_url": "https://www.google.com/maps/dir/?api=1&origin=Travelodge+Covent+Garden&destination=Travelodge+Covent+Garden&waypoints=London+Paddington+Station|Bath+Spa+Station|Bridgerton+Tour+Bath|Royal+Crescent|Bath+Spa+Station|London+Paddington+Station&travelmode=transit", "embed_url": "https://www.google.com/maps?q=Travelodge+Covent+Garden+to+London+Paddington+Station+to+Bath+Spa+Station+to+Bridgerton+Tour+Bath+to+Royal+Crescent+to+Bath+Spa+Station+to+London+Paddington+Station+to+Travelodge+Covent+Garden&output=embed"}, {"date": "Sat May 16, 2026", "title": "Gloucester Cathedral + Cheltenham Overnight Option", "intensity": "Heavy / Optional Overnight", "summary": "Best done as an overnight. Same-day from London is possible but not pleasant if you want Gloucester Cathedral plus Cheltenham.", "stops": ["Travelodge Covent Garden", "London Paddington Station", "Gloucester Station", "Gloucester Cathedral", "Cheltenham Spa", "Cheltenham hotel"], "schedule": [["08:00–10:30", "Train from London Paddington to Gloucester."], ["10:45–13:00", "Gloucester Cathedral."], ["13:00–14:00", "Lunch in Gloucester."], ["14:30–16:00", "Transit to Cheltenham and check in / walk."], ["Evening", "Cheltenham dinner."]], "notes": ["Strong recommendation: overnight. Returning to London same day after Cheltenham is possible, but it turns into logistics rather than travel."], "map_url": "https://www.google.com/maps/dir/?api=1&origin=Travelodge+Covent+Garden&destination=Cheltenham+hotel&waypoints=London+Paddington+Station|Gloucester+Station|Gloucester+Cathedral|Cheltenham+Spa&travelmode=transit", "embed_url": "https://www.google.com/maps?q=Travelodge+Covent+Garden+to+London+Paddington+Station+to+Gloucester+Station+to+Gloucester+Cathedral+to+Cheltenham+Spa+to+Cheltenham+hotel&output=embed"}, {"date": "Sun May 17, 2026", "title": "Cheltenham Morning + Return to London", "intensity": "Light / Recovery", "summary": "Use this as a slower reset after multiple day trips.", "stops": ["Cheltenham", "Montpellier District Cheltenham", "Cheltenham Spa Station", "London Paddington Station", "Travelodge Covent Garden"], "schedule": [["09:30–11:30", "Cheltenham: Montpellier / Promenade / relaxed breakfast."], ["12:00–14:30", "Train back to London."], ["Afternoon", "Laundry, rest, flexible local wandering."], ["Evening", "Free."]], "notes": ["If you skip the overnight, repurpose this as your pure rest day in London."], "map_url": "https://www.google.com/maps/dir/?api=1&origin=Cheltenham&destination=Travelodge+Covent+Garden&waypoints=Montpellier+District+Cheltenham|Cheltenham+Spa+Station|London+Paddington+Station&travelmode=transit", "embed_url": "https://www.google.com/maps?q=Cheltenham+to+Montpellier+District+Cheltenham+to+Cheltenham+Spa+Station+to+London+Paddington+Station+to+Travelodge+Covent+Garden&output=embed"}, {"date": "Mon May 18, 2026", "title": "Flex / Make-up Day + Covent Garden Final Pass", "intensity": "Light", "summary": "Do not schedule this tightly. You need one London day to absorb closures, weather, missed reservations, or fatigue.", "stops": ["Travelodge Covent Garden", "Covent Garden", "Seven Dials", "Soho", "Leicester Square", "Travelodge Covent Garden"], "schedule": [["Morning", "Sleep in / late breakfast."], ["Midday", "Make-up stop: British Museum, National Gallery, London Eye, or shopping."], ["Afternoon", "Covent Garden / Seven Dials final pass."], ["Evening", "Final dinner."]], "notes": ["This flex day is what keeps the itinerary from collapsing when something changes."], "map_url": "https://www.google.com/maps/dir/?api=1&origin=Travelodge+Covent+Garden&destination=Travelodge+Covent+Garden&waypoints=Covent+Garden|Seven+Dials|Soho|Leicester+Square&travelmode=transit", "embed_url": "https://www.google.com/maps?q=Travelodge+Covent+Garden+to+Covent+Garden+to+Seven+Dials+to+Soho+to+Leicester+Square+to+Travelodge+Covent+Garden&output=embed"}, {"date": "Tue May 19, 2026", "title": "Departure Day", "intensity": "Light", "summary": "Keep only nearby breakfast and departure logistics.", "stops": ["Travelodge Covent Garden", "Covent Garden", "Airport / onward travel"], "schedule": [["Morning", "Breakfast / checkout."], ["Buffer", "Leave a serious transit buffer for airport or rail."]], "notes": ["No meaningful sightseeing unless your departure is late afternoon or evening."], "map_url": "https://www.google.com/maps/dir/?api=1&origin=Travelodge+Covent+Garden&destination=Airport+/+onward+travel&waypoints=Covent+Garden&travelmode=transit", "embed_url": "https://www.google.com/maps?q=Travelodge+Covent+Garden+to+Covent+Garden+to+Airport+/+onward+travel&output=embed"}];
+
+function card(day, index) {
+  const rows = day.schedule.map(([time, plan]) => `<div class="row"><div class="time">${time}</div><div class="plan">${plan}</div></div>`).join("");
+  const notes = day.notes.map(n => `<li>${n}</li>`).join("");
+  return `<article class="day-card" data-intensity="${day.intensity}">
+    <div class="day-head">
+      <div class="date">${day.date}</div>
+      <h2 class="day-title">${day.title}</h2>
+      <div class="badges"><span class="badge">${day.intensity}</span><span class="badge">${day.stops.length - 2} planned stops</span></div>
+      <p class="summary">${day.summary}</p>
+    </div>
+    <div class="route"><strong>Route:</strong> ${day.stops.join(" → ")}</div>
+    <div class="actions">
+      <a class="btn" href="${day.map_url}" target="_blank" rel="noopener">Open route in Google Maps</a>
+      <a class="btn secondary" href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Back to top</a>
+    </div>
+    <section class="schedule">${rows}</section>
+    <section class="notes"><h4>Practical notes</h4><ul>${notes}</ul></section>
+    <iframe class="map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="${day.embed_url}"></iframe>
+  </article>`;
+}
+const container = document.getElementById("cards");
+container.innerHTML = days.map(card).join("");
+
+document.querySelectorAll(".filter").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".filter").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    const f = btn.dataset.filter;
+    document.querySelectorAll(".day-card").forEach(c => {
+      const intensity = c.dataset.intensity;
+      c.style.display = (f === "all" || intensity.includes(f)) ? "" : "none";
+    });
+  });
+});
+</script>
+</body>
+</html>
