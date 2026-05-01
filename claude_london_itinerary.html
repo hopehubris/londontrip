@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>London May 2025 — Our Itinerary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0f1f3d;
+    --navy-light: #1a2f58;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --cream: #f9f6f0;
+    --warm-white: #fdfbf7;
+    --text-dark: #1a1410;
+    --text-mid: #4a3f35;
+    --text-light: #8a7d6e;
+    --border: rgba(201,168,76,0.2);
+
+    --city: #1a4a6e;
+    --cultural: #1a5c3e;
+    --east: #7a3020;
+    --west: #4a3080;
+    --south: #6e2050;
+    --daytrip: #6e4a10;
+    --tour: #2a5020;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    min-height: 100vh;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--navy);
+    color: var(--cream);
+    padding: 60px 40px 50px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at 80% 50%, rgba(201,168,76,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-inner { max-width: 1100px; margin: 0 auto; position: relative; }
+  .hero-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(44px, 7vw, 80px);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -1px;
+    margin-bottom: 20px;
+  }
+  .hero h1 em { font-style: italic; color: var(--gold-light); }
+  .hero-meta {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    font-size: 14px;
+    color: rgba(249,246,240,0.65);
+  }
+  .hero-meta span { display: flex; align-items: center; gap: 8px; }
+  .hero-meta .dot { width: 5px; height: 5px; background: var(--gold); border-radius: 50%; }
+
+  /* ── NAV BAR ── */
+  .nav-bar {
+    background: var(--navy-light);
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 0 40px;
+  }
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  .nav-btn {
+    background: none;
+    border: none;
+    color: rgba(249,246,240,0.5);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    padding: 14px 16px;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .nav-btn:hover { color: var(--cream); }
+  .nav-btn.active {
+    color: var(--gold-light);
+    border-bottom-color: var(--gold);
+  }
+
+  /* ── MAIN ── */
+  .main { max-width: 1100px; margin: 0 auto; padding: 48px 40px; }
+
+  /* ── OVERVIEW GRID ── */
+  .section-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 56px;
+  }
+  .ov-card {
+    background: white;
+    border-radius: 10px;
+    padding: 16px;
+    border-left: 3px solid;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .ov-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+  .ov-card.city { border-left-color: var(--city); }
+  .ov-card.cultural { border-left-color: var(--cultural); }
+  .ov-card.east { border-left-color: var(--east); }
+  .ov-card.west { border-left-color: var(--west); }
+  .ov-card.south { border-left-color: var(--south); }
+  .ov-card.daytrip { border-left-color: var(--daytrip); }
+  .ov-card.tour { border-left-color: var(--tour); }
+  .ov-date { font-size: 10px; font-weight: 500; color: var(--text-light); letter-spacing: 0.5px; margin-bottom: 4px; text-transform: uppercase; }
+  .ov-title { font-family: 'Cormorant Garamond', serif; font-size: 15px; font-weight: 600; line-height: 1.3; color: var(--text-dark); }
+
+  /* ── DAY VIEWS ── */
+  .day-view { display: none; }
+  .day-view.active { display: block; }
+
+  .day-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 36px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+  .day-num-badge {
+    background: var(--navy);
+    color: var(--gold);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .day-header-text {}
+  .day-header-date { font-size: 12px; color: var(--text-light); font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 4px; }
+  .day-header-title { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 400; line-height: 1.15; }
+  .day-header-note { font-size: 13px; color: var(--text-mid); margin-top: 6px; font-style: italic; }
+
+  /* ── STOPS ── */
+  .stops-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .stop-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+  .stop-top { display: flex; align-items: flex-start; gap: 12px; }
+  .stop-time {
+    background: var(--navy);
+    color: var(--gold);
+    font-size: 10px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .stop-name { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 600; line-height: 1.3; }
+  .stop-duration { font-size: 11px; color: var(--text-light); }
+  .stop-note { font-size: 13px; color: var(--text-mid); line-height: 1.5; }
+  .stop-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+  .badge {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 3px 9px;
+    border-radius: 20px;
+    letter-spacing: 0.2px;
+  }
+  .badge.book { background: #dbeafe; color: #1e40af; }
+  .badge.free { background: #dcfce7; color: #166534; }
+  .badge.timing { background: #fef9c3; color: #854d0e; }
+  .badge.eve { background: #f3e8ff; color: #6b21a8; }
+
+  /* ── TIPS BOX ── */
+  .tips-box {
+    background: var(--navy);
+    border-radius: 12px;
+    padding: 20px 24px;
+    color: var(--cream);
+    margin-bottom: 32px;
+  }
+  .tips-label { font-size: 10px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+  .tips-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+  .tips-list li { font-size: 13px; color: rgba(249,246,240,0.8); display: flex; gap: 10px; line-height: 1.5; }
+  .tips-list li::before { content: '→'; color: var(--gold); flex-shrink: 0; }
+
+  .day-nav { display: flex; gap: 12px; margin-top: 24px; }
+  .day-nav-btn {
+    background: white;
+    border: 1px solid var(--border);
+    color: var(--navy);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .day-nav-btn:hover { background: var(--navy); color: var(--gold); border-color: var(--navy); }
+  .day-nav-btn.next { background: var(--navy); color: var(--gold); border-color: var(--navy); }
+  .day-nav-btn.next:hover { background: var(--navy-light); }
+
+  /* ── BOOKING PANEL ── */
+  #view-booking .booking-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+  }
+  .booking-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+  .booking-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 600; margin-bottom: 6px; }
+  .booking-card p { font-size: 13px; color: var(--text-mid); line-height: 1.6; }
+  .booking-urgency {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+  }
+  .urgency-high { background: #fee2e2; color: #991b1b; }
+  .urgency-med { background: #fef9c3; color: #854d0e; }
+  .urgency-info { background: #dbeafe; color: #1e40af; }
+
+  /* ── LEGEND ── */
+  .legend { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 28px; }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-mid); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── PRINT ── */
+  @media print {
+    .nav-bar, .day-nav, #view-overview .overview-grid { display: none; }
+    .day-view { display: block !important; page-break-before: always; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">London Travel Guide</div>
+    <h1>15 Days in <em>London</em></h1>
+    <div class="hero-meta">
+      <span><span class="dot"></span> May 5 – 19, 2026</span>
+      <span><span class="dot"></span> Travelodge Covent Garden, 10 Drury Lane WC2B 5RE</span>
+      <span><span class="dot"></span> 22 attractions · 3 day trips</span>
+    </div>
+  </div>
+</div>
+
+<nav class="nav-bar">
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="showView('overview')">Overview</button>
+    <button class="nav-btn" onclick="showView('d1')">Day 1</button>
+    <button class="nav-btn" onclick="showView('d2')">Day 2</button>
+    <button class="nav-btn" onclick="showView('d3')">Day 3</button>
+    <button class="nav-btn" onclick="showView('d4')">Day 4</button>
+    <button class="nav-btn" onclick="showView('d5')">Day 5</button>
+    <button class="nav-btn" onclick="showView('d6')">Day 6</button>
+    <button class="nav-btn" onclick="showView('d7')">Day 7</button>
+    <button class="nav-btn" onclick="showView('d8')">Day 8</button>
+    <button class="nav-btn" onclick="showView('d9')">Day 9</button>
+    <button class="nav-btn" onclick="showView('d10')">Day 10</button>
+    <button class="nav-btn" onclick="showView('d11')">Day 11</button>
+    <button class="nav-btn" onclick="showView('d12')">Day 12</button>
+    <button class="nav-btn" onclick="showView('d13')">Day 13</button>
+    <button class="nav-btn" onclick="showView('d14')">Day 14</button>
+    <button class="nav-btn" onclick="showView('d15')">Day 15</button>
+    <button class="nav-btn" onclick="showView('booking')">📋 Booking</button>
+  </div>
+</nav>
+
+<div class="main">
+
+<!-- ── OVERVIEW ── -->
+<div id="view-overview" class="day-view active">
+  <div class="section-label">All 15 Days at a Glance</div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--city)"></div>Central / near hotel</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--cultural)"></div>South Kensington</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--east)"></div>East London</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--west)"></div>West London</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--south)"></div>South Bank</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--daytrip)"></div>Day trip</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--tour)"></div>Walking tour</div>
+  </div>
+  <div class="overview-grid">
+    <div class="ov-card city" onclick="showView('d1')"><div class="ov-date">Mon May 5</div><div class="ov-title">Arrival + Covent Garden</div></div>
+    <div class="ov-card city" onclick="showView('d2')"><div class="ov-date">Tue May 6</div><div class="ov-title">Trafalgar + National Gallery + Forbidden Planet</div></div>
+    <div class="ov-card city" onclick="showView('d3')"><div class="ov-date">Wed May 7</div><div class="ov-title">British Museum + House of MinaLima</div></div>
+    <div class="ov-card east" onclick="showView('d4')"><div class="ov-date">Thu May 8</div><div class="ov-title">The Who Shop + Jack the Ripper (day + eve)</div></div>
+    <div class="ov-card east" onclick="showView('d5')"><div class="ov-date">Fri May 9</div><div class="ov-title">Tower of London + Tower Bridge</div></div>
+    <div class="ov-card cultural" onclick="showView('d6')"><div class="ov-date">Sat May 10</div><div class="ov-title">Natural History Museum + Science Museum</div></div>
+    <div class="ov-card cultural" onclick="showView('d7')"><div class="ov-date">Sun May 11</div><div class="ov-title">Kensington Gardens + Earl's Court</div></div>
+    <div class="ov-card south" onclick="showView('d8')"><div class="ov-date">Mon May 12</div><div class="ov-title">London Eye + South Bank Waterfront</div></div>
+    <div class="ov-card tour" onclick="showView('d9')"><div class="ov-date">Tue May 13</div><div class="ov-title">Doctor Who Walking Tour (Brit Movie Tours)</div></div>
+    <div class="ov-card tour" onclick="showView('d10')"><div class="ov-date">Wed May 14</div><div class="ov-title">Bridgerton Walking Tour (Brit Movie Tours)</div></div>
+    <div class="ov-card west" onclick="showView('d11')"><div class="ov-date">Thu May 15</div><div class="ov-title">Sherlock's Mind Palace Afternoon Tea</div></div>
+    <div class="ov-card daytrip" onclick="showView('d12')"><div class="ov-date">Fri May 16</div><div class="ov-title">Day Trip — Leeds Castle, Kent</div></div>
+    <div class="ov-card daytrip" onclick="showView('d13')"><div class="ov-date">Sat May 17</div><div class="ov-title">Day Trip — Hever Castle, Kent</div></div>
+    <div class="ov-card daytrip" onclick="showView('d14')"><div class="ov-date">Sun May 18</div><div class="ov-title">Day Trip — Gloucester Cathedral + Cheltenham</div></div>
+    <div class="ov-card city" onclick="showView('d15')"><div class="ov-date">Mon May 19</div><div class="ov-title">Departure Day + Final Shopping</div></div>
+  </div>
+</div>
+
+<!-- ── DAY 1 ── -->
+<div id="view-d1" class="day-view">
+  <div class="day-header">
+    <div class="day-num-badge">1</div>
+    <div class="day-header-text">
+      <div class="day-header-date">Monday, May 5 · Central London</div>
+      <div class="day-header-title">Arrival + Covent Garden</div>
+      <div class="day-header-note">Easy intro day — everything within 10 minutes of your hotel.</div>
+    </div>
+  </div>
+  <div class="stops-grid">
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">Afternoon</span><div class="stop-name">Check in — Travelodge Covent Garden</div></div>
+      <div class="stop-note">10 Drury Lane WC2B 5RE. Your home base for 15 nights. Drop bags, freshen up.</div>
+    </div>
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">3:00 PM</span><div class="stop-name">Pandora at Covent Garden</div></div>
+      <div class="stop-duration">~45 min · 3 min walk from hotel</div>
+      <div class="stop-note">21 James St WC2E. Open until 8pm Mon–Sat. Perfect first London errand.</div>
+    </div>
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">4:00 PM</span><div class="stop-name">Leicester Square</div></div>
+      <div class="stop-duration">~1 hour · 10 min walk</div>
+      <div class="stop-note">Street performers, buskers, the buzz of London's entertainment district. Easy stroll to get your bearings.</div>
+    </div>
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">Evening</span><div class="stop-name">Covent Garden Market + Dinner</div></div>
+      <div class="stop-note">Steps from your hotel. Street performers, restaurants on every corner. Great first night introduction to London life.</div>
+    </div>
+  </div>
+  <div class="tips-box">
+    <div class="tips-label">Tips</div>
+    <ul class="tips-list">
+      <li>No Tube needed today — everything is walkable from the hotel.</li>
+      <li>Get an Oyster card or set up contactless payment for the Tube — you'll need it from Day 4 onwards.</li>
+      <li>The Covent Garden market runs daily; street performers perform in the piazza from mid-morning.</li>
+    </ul>
+  </div>
+  <div class="day-nav"><button class="day-nav-btn next" onclick="showView('d2')">Day 2 →</button></div>
+</div>
+
+<!-- ── DAY 2 ── -->
+<div id="view-d2" class="day-view">
+  <div class="day-header">
+    <div class="day-num-badge">2</div>
+    <div class="day-header-text">
+      <div class="day-header-date">Tuesday, May 6 · Central London</div>
+      <div class="day-header-title">National Gallery + Trafalgar Square + Forbidden Planet</div>
+      <div class="day-header-note">All within a 10-minute cluster. All free. All brilliant.</div>
+    </div>
+  </div>
+  <div class="stops-grid">
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">10:00 AM</span><div class="stop-name">National Gallery</div></div>
+      <div class="stop-duration">3–4 hours · 15 min walk from hotel</div>
+      <div class="stop-note">Trafalgar Square WC2N. Free entry. Van Gogh's Sunflowers, da Vinci, Rembrandt, Monet. One of the world's great collections.</div>
+      <div class="stop-badges"><span class="badge free">Free entry</span></div>
+    </div>
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">2:30 PM</span><div class="stop-name">Trafalgar Square</div></div>
+      <div class="stop-duration">45 min · Right outside the Gallery</div>
+      <div class="stop-note">Nelson's Column, bronze lions, fountains. A classic London square that always rewards a wander.</div>
+      <div class="stop-badges"><span class="badge free">Free</span></div>
+    </div>
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">3:30 PM</span><div class="stop-name">Forbidden Planet London Megastore</div></div>
+      <div class="stop-duration">1–2 hours · 179 Shaftesbury Ave WC2H</div>
+      <div class="stop-note">Sci-fi, comics, manga, anime, collectibles over two floors. Open until 7pm. Budget alert — the wallet rarely survives intact.</div>
+    </div>
+  </div>
+  <div class="tips-box">
+    <div class="tips-label">Tips</div>
+    <ul class="tips-list">
+      <li>The National Gallery stays open until 9pm on Fridays if you want a quieter visit on another day.</li>
+      <li>Forbidden Planet is a 5-minute walk north from Trafalgar, up through the back of Leicester Square.</li>
+      <li>Eat lunch inside the Gallery café (downstairs) or grab something from one of the stalls around Trafalgar.</li>
+    </ul>
+  </div>
+  <div class="day-nav"><button class="day-nav-btn" onclick="showView('d1')">← Day 1</button><button class="day-nav-btn next" onclick="showView('d3')">Day 3 →</button></div>
+</div>
+
+<!-- ── DAY 3 ── -->
+<div id="view-d3" class="day-view">
+  <div class="day-header">
+    <div class="day-num-badge">3</div>
+    <div class="day-header-text">
+      <div class="day-header-date">Wednesday, May 7 · Bloomsbury → Soho</div>
+      <div class="day-header-title">British Museum + House of MinaLima</div>
+      <div class="day-header-note">A morning of ancient wonders into an afternoon of wizarding design.</div>
+    </div>
+  </div>
+  <div class="stops-grid">
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">10:00 AM</span><div class="stop-name">The British Museum</div></div>
+      <div class="stop-duration">3–4 hours · Great Russell St WC1B</div>
+      <div class="stop-note">Free entry. Rosetta Stone, Elgin Marbles, Egyptian mummies, Lewis Chessmen. One of the world's greatest museums. The Great Court alone is worth the visit.</div>
+      <div class="stop-badges"><span class="badge free">Free entry</span></div>
+    </div>
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">2:30 PM</span><div class="stop-name">House of MinaLima</div></div>
+      <div class="stop-duration">1–2 hours · 157 Wardour St W1F (Soho)</div>
+      <div class="stop-note">The graphic design duo behind the Harry Potter films. Four floors of original artwork, prints, and merchandise. Gallery is free to enter. Open 11am–6:45pm daily.</div>
+      <div class="stop-badges"><span class="badge free">Gallery is free</span></div>
+    </div>
+  </div>
+  <div class="tips-box">
+    <div class="tips-label">Tips</div>
+    <ul class="tips-list">
+      <li>British Museum is free but book a timed entry slot online to avoid queuing outside.</li>
+      <li>Focus on 2–3 galleries rather than trying to see everything — Egyptian, Greek, and Medieval Europe are highlights.</li>
+      <li>MinaLima is 20 min walk from the museum through Soho's streets. Grab lunch en route.</li>
+      <li>MinaLima can get crowded — weekday afternoons are quieter.</li>
+    </ul>
+  </div>
+  <div class="day-nav"><button class="day-nav-btn" onclick="showView('d2')">← Day 2</button><button class="day-nav-btn next" onclick="showView('d4')">Day 4 →</button></div>
+</div>
+
+<!-- ── DAY 4 ── -->
+<div id="view-d4" class="day-view">
+  <div class="day-header">
+    <div class="day-num-badge">4</div>
+    <div class="day-header-text">
+      <div class="day-header-date">Thursday, May 8 · East London (full day + evening)</div>
+      <div class="day-header-title">The Who Shop + Jack the Ripper Museum + Evening Walk</div>
+      <div class="day-header-note">A long but thrilling East London day — from Doctor Who to Victorian murder.</div>
+    </div>
+  </div>
+  <div class="stops-grid">
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">9:30 AM</span><div class="stop-name">The Who Shop</div></div>
+      <div class="stop-duration">2–3 hours · 39–41 Barking Rd, East Ham E6</div>
+      <div class="stop-note">District line from Covent Garden/Aldgate East toward Barking — Upton Park station (~45 min). Doctor Who shop, museum, costumes, and memorabilia. Also stocks Buffy, sci-fi, and fantasy. Staff are legendary fans.</div>
+      <div class="stop-badges"><span class="badge timing">Thu–Sat only</span></div>
+    </div>
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">1:30 PM</span><div class="stop-name">Jack the Ripper Museum</div></div>
+      <div class="stop-duration">1–1.5 hours · 12 Cable St, Aldgate E1</div>
+      <div class="stop-note">Return west on the District/Circle line to Aldgate East (~35 min). Immersive recreation of Victorian East End. Five floors of social history — not just gory, genuinely thoughtful. Add £5 audio guide.</div>
+      <div class="stop-badges"><span class="badge book">Book ahead for audio guide</span></div>
+    </div>
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">~7:00 PM</span><div class="stop-name">Jack the Ripper Walking Tour</div></div>
+      <div class="stop-duration">~2 hours · Departs from Aldgate East area</div>
+      <div class="stop-note">Evening walking tours depart from Aldgate East tube area. Book a tour separately — "Elegant Sam" from the museum's affiliated tours is highly reviewed. Walks the original murder sites and Victorian streets.</div>
+      <div class="stop-badges"><span class="badge eve">Evening — book in advance</span></div>
+    </div>
+  </div>
+  <div class="tips-box">
+    <div class="tips-label">Tips</div>
+    <ul class="tips-list">
+      <li>Confirm The Who Shop's exact address at thewhoshop.com — they have moved premises in the past.</li>
+      <li>Eat lunch near East Ham before heading back — the Boleyn Pub on Green Street is a favourite local spot.</li>
+      <li>Leave comfortable shoes for the evening walk — 2 hours of cobbled Victorian streets.</li>
+      <li>The evening walking tour and museum are in the same area, so no extra travel needed between them.</li>
+    </ul>
+  </div>
+  <div class="day-nav"><button class="day-nav-btn" onclick="showView('d3')">← Day 3</button><button class="day-nav-btn next" onclick="showView('d5')">Day 5 →</button></div>
+</div>
+
+<!-- ── DAY 5 ── -->
+<div id="view-d5" class="day-view">
+  <div class="day-header">
+    <div class="day-num-badge">5</div>
+    <div class="day-header-text">
+      <div class="day-header-date">Friday, May 9 · East London / Thames</div>
+      <div class="day-header-title">Tower of London + Tower Bridge</div>
+      <div class="day-header-note">Two icons, five minutes apart. Arrive early to beat the crowds.</div>
+    </div>
+  </div>
+  <div class="stops-grid">
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">9:00 AM</span><div class="stop-name">Tower of London</div></div>
+      <div class="stop-duration">3–4 hours · Circle/District line to Tower Hill</div>
+      <div class="stop-note">Crown Jewels, Beefeater-guided tour, White Tower armory, the ravens. One of England's most storied sites. Book tickets online to skip the queue.</div>
+      <div class="stop-badges"><span class="badge book">Pre-book tickets — hrp.org.uk</span></div>
+    </div>
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">1:30 PM</span><div class="stop-name">Tower Bridge Exhibition</div></div>
+      <div class="stop-duration">1–2 hours · 5 min walk from Tower</div>
+      <div class="stop-note">Walk the glass-floor walkways high above the Thames, see the Victorian engine rooms, and get unbeatable views up and down the river. The glass floor is genuinely exhilarating.</div>
+      <div class="stop-badges"><span class="badge book">Book tickets at towerbridge.org.uk</span></div>
+    </div>
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">3:30 PM</span><div class="stop-name">Borough Market + South Bank stroll</div></div>
+      <div class="stop-duration">1–2 hours · 10 min walk across London Bridge</div>
+      <div class="stop-note">Cross London Bridge to Borough Market (open until 5pm) for some of London's best food stalls. Optional: continue west along the South Bank toward the Tate Modern.</div>
+    </div>
+  </div>
+  <div class="tips-box">
+    <div class="tips-label">Tips</div>
+    <ul class="tips-list">
+      <li>Tower opens at 9am Tue–Sat, 10am Sunday. Arriving at opening beats the midday crush significantly.</li>
+      <li>Book the Beefeater guided tour — free with admission, runs at regular intervals, essential for context.</li>
+      <li>The Crown Jewels queue can be long — go there first thing before it builds.</li>
+      <li>Tower Bridge bookings recommended especially in spring/summer.</li>
+    </ul>
+  </div>
+  <div class="day-nav"><button class="day-nav-btn" onclick="showView('d4')">← Day 4</button><button class="day-nav-btn next" onclick="showView('d6')">Day 6 →</button></div>
+</div>
+
+<!-- ── DAY 6 ── -->
+<div id="view-d6" class="day-view">
+  <div class="day-header">
+    <div class="day-num-badge">6</div>
+    <div class="day-header-text">
+      <div class="day-header-date">Saturday, May 10 · South Kensington</div>
+      <div class="day-header-title">Natural History Museum + Science Museum</div>
+      <div class="day-header-note">Next-door neighbours. Both free. Both extraordinary. Full day required.</div>
+    </div>
+  </div>
+  <div class="stops-grid">
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">10:00 AM</span><div class="stop-name">Natural History Museum</div></div>
+      <div class="stop-duration">3 hours · Cromwell Rd SW7</div>
+      <div class="stop-note">Free entry. Hope the blue whale skeleton in Hintze Hall, dinosaur gallery, mammals gallery, and the stunning Romanesque architecture. Pre-book free timed entry online.</div>
+      <div class="stop-badges"><span class="badge free">Free entry</span><span class="badge book">Reserve timed entry online</span></div>
+    </div>
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">2:00 PM</span><div class="stop-name">Science Museum</div></div>
+      <div class="stop-duration">3 hours · Exhibition Rd SW7 (right next door)</div>
+      <div class="stop-note">Free entry. Space gallery, flight gallery with full-size aircraft, the Apollo 10 command module, and interactive science exhibits. Equally as impressive as the NHM.</div>
+      <div class="stop-badges"><span class="badge free">Free entry</span></div>
+    </div>
+  </div>
+  <div class="tips-box">
+    <div class="tips-label">Tips</div>
+    <ul class="tips-list">
+      <li>Both museums are on the same street (Exhibition Road) — you'll be walking 30 seconds between them.</li>
+      <li>Pick your priority galleries in each rather than attempting everything — you'd need two full days for both.</li>
+      <li>NHM: prioritise Hintze Hall (whale), Dinosaurs, and the wildlife garden if the weather's nice.</li>
+      <li>South Kensington station is right there; take the Piccadilly line from Holborn (easy from Covent Garden area).</li>
+    </ul>
+  </div>
+  <div class="day-nav"><button class="day-nav-btn" onclick="showView('d5')">← Day 5</button><button class="day-nav-btn next" onclick="showView('d7')">Day 7 →</button></div>
+</div>
+
+<!-- ── DAY 7 ── -->
+<div id="view-d7" class="day-view">
+  <div class="day-header">
+    <div class="day-num-badge">7</div>
+    <div class="day-header-text">
+      <div class="day-header-date">Sunday, May 11 · Kensington + Earl's Court</div>
+      <div class="day-header-title">Kensington Gardens + Earl's Court + Freddie Mercury</div>
+      <div class="day-header-note">A gentle Sunday — parks, statues, bohemian streets, and a rock legend's home.</div>
+    </div>
+  </div>
+  <div class="stops-grid">
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">10:30 AM</span><div class="stop-name">Diana Princess of Wales Memorial Fountain</div></div>
+      <div class="stop-duration">45 min · Hyde Park W2</div>
+      <div class="stop-note">A beautiful oval stream of Cornish granite running through Hyde Park. Peaceful and moving. Children love paddling in the shallows in warm weather.</div>
+    </div>
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">11:30 AM</span><div class="stop-name">Peter Pan Statue</div></div>
+      <div class="stop-duration">30 min · Kensington Gardens W2</div>
+      <div class="stop-note">10 min walk through the gardens. The 1912 bronze by George Frampton, commissioned overnight by J.M. Barrie as a surprise for London. Surrounded by squirrels and fairy folk (allegedly).</div>
+    </div>
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">1:30 PM</span><div class="stop-name">Freddie Mercury's Former Home</div></div>
+      <div class="stop-duration">30 min · 1 Logan Place W8, Earl's Court</div>
+      <div class="stop-note">The Garden Lodge — covered in fan tributes, flowers, and messages. No interior access, but the wall itself is a deeply moving experience for Queen fans. 10 min Tube from Kensington.</div>
+    </div>
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">2:30 PM</span><div class="stop-name">Earl's Court Neighbourhood</div></div>
+      <div class="stop-duration">1–2 hours</div>
+      <div class="stop-note">Explore Earl's Court Road — vintage shops, independent restaurants, and the Warwick Road area. A historic bohemian London neighbourhood worth a leisurely afternoon wander.</div>
+    </div>
+  </div>
+  <div class="tips-box">
+    <div class="tips-label">Tips</div>
+    <ul class="tips-list">
+      <li>Both Hyde Park and Kensington Gardens are open 24/7 and free.</li>
+      <li>The Diana Fountain can close in bad weather — check royalparks.org.uk before visiting.</li>
+      <li>From Peter Pan statue to Earl's Court: take the 49 bus down Kensington High Street, or Tube from High St Kensington (one stop to Earl's Court).</li>
+      <li>Logan Place is a quiet residential street — be respectful of neighbours.</li>
+    </ul>
+  </div>
+  <div class="day-nav"><button class="day-nav-btn" onclick="showView('d6')">← Day 6</button><button class="day-nav-btn next" onclick="showView('d8')">Day 8 →</button></div>
+</div>
+
+<!-- ── DAY 8 ── -->
+<div id="view-d8" class="day-view">
+  <div class="day-header">
+    <div class="day-num-badge">8</div>
+    <div class="day-header-text">
+      <div class="day-header-date">Monday, May 12 · South Bank</div>
+      <div class="day-header-title">London Eye + South Bank Waterfront</div>
+      <div class="day-header-note">Best views in London, followed by one of its finest walks.</div>
+    </div>
+  </div>
+  <div class="stops-grid">
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">10:00 AM</span><div class="stop-name">London Eye</div></div>
+      <div class="stop-duration">1.5–2 hours · South Bank SE1</div>
+      <div class="stop-note">Pre-book tickets online — sells out fast. Opens 11am Mon–Thu, 10am Fri–Sun. The 30-min rotation gives 360° views up to 25 miles on a clear day. Consider the Champagne Experience for a special treat.</div>
+      <div class="stop-badges"><span class="badge book">Must pre-book — londoneye.com</span></div>
+    </div>
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">12:30 PM</span><div class="stop-name">South Bank Waterfront Walk</div></div>
+      <div class="stop-duration">2–3 hours · Walk east along the Thames</div>
+      <div class="stop-note">From the Eye: walk east past Hungerford Bridge, National Theatre, BFI, Tate Modern (free to enter), Millennium Bridge, and Borough Market. One of London's great free experiences.</div>
+      <div class="stop-badges"><span class="badge free">Entirely free</span></div>
+    </div>
+  </div>
+  <div class="tips-box">
+    <div class="tips-label">Tips</div>
+    <ul class="tips-list">
+      <li>The Eye opens at 11am on Mondays — book the first slot to avoid building queues.</li>
+      <li>The South Bank walk can extend all the way to Tower Bridge (~3 miles total), linking back to Day 5 territory.</li>
+      <li>Tate Modern is free and worth 30–45 minutes inside even if you're not an art fan — the Turbine Hall is spectacular.</li>
+      <li>Borough Market is closed on Mondays and Sundays (open Tue–Sat). Check for current hours.</li>
+    </ul>
+  </div>
+  <div class="day-nav"><button class="day-nav-btn" onclick="showView('d7')">← Day 7</button><button class="day-nav-btn next" onclick="showView('d9')">Day 9 →</button></div>
+</div>
+
+<!-- ── DAY 9 ── -->
+<div id="view-d9" class="day-view">
+  <div class="day-header">
+    <div class="day-num-badge">9</div>
+    <div class="day-header-text">
+      <div class="day-header-date">Tuesday, May 13 · London (central)</div>
+      <div class="day-header-title">Doctor Who Walking Tour — Brit Movie Tours</div>
+      <div class="day-header-note">Allons-y! A guided walk through London's real-life Whovian filming locations.</div>
+    </div>
+  </div>
+  <div class="stops-grid">
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">Morning</span><div class="stop-name">Doctor Who Walking Tour</div></div>
+      <div class="stop-duration">~2–3 hours · Brit Movie Tours</div>
+      <div class="stop-note">A guided walk of London locations used in Doctor Who filming. Your booking confirmation will include the exact meeting point. Brit Movie Tours office is at 7 Bell Yard WC2A — close to your hotel. Book at britmovietours.com</div>
+      <div class="stop-badges"><span class="badge book">Pre-book at britmovietours.com</span></div>
+    </div>
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">Afternoon</span><div class="stop-name">Free afternoon</div></div>
+      <div class="stop-note">Use the afternoon to revisit favourite areas, do some shopping around Covent Garden, or explore the Strand and Aldwych area near the Brit Movie Tours office. Fleet Street and the Inns of Court are worth a wander.</div>
+    </div>
+  </div>
+  <div class="tips-box">
+    <div class="tips-label">Tips</div>
+    <ul class="tips-list">
+      <li>Book well in advance — Doctor Who tours are popular and fill quickly, especially in spring.</li>
+      <li>Check britmovietours.com for current tour schedules and meeting point details.</li>
+      <li>Wear comfortable walking shoes — tours cover significant ground over 2+ hours.</li>
+      <li>Reviews highlight guide "Chris" as particularly fun and knowledgeable on Doctor Who tours.</li>
+    </ul>
+  </div>
+  <div class="day-nav"><button class="day-nav-btn" onclick="showView('d8')">← Day 8</button><button class="day-nav-btn next" onclick="showView('d10')">Day 10 →</button></div>
+</div>
+
+<!-- ── DAY 10 ── -->
+<div id="view-d10" class="day-view">
+  <div class="day-header">
+    <div class="day-num-badge">10</div>
+    <div class="day-header-text">
+      <div class="day-header-date">Wednesday, May 14 · London (central/west)</div>
+      <div class="day-header-title">Bridgerton Walking Tour — Brit Movie Tours</div>
+      <div class="day-header-note">The ton awaits. A tour through Mayfair and London's most elegant filming locations.</div>
+    </div>
+  </div>
+  <div class="stops-grid">
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">Morning</span><div class="stop-name">Bridgerton Walking Tour</div></div>
+      <div class="stop-duration">~2–3 hours · Brit Movie Tours</div>
+      <div class="stop-note">Filming locations include streets of Mayfair, South Kensington, and other elegant London districts. Check britmovietours.com for the Bridgerton tour schedule and exact meeting point — it varies by season.</div>
+      <div class="stop-badges"><span class="badge book">Pre-book at britmovietours.com</span></div>
+    </div>
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">Afternoon</span><div class="stop-name">Explore the filming locations area</div></div>
+      <div class="stop-note">Mayfair has excellent cafés, galleries, and boutique shops. Bond Street for high-end shopping. Hyde Park is a 5-minute walk. A lovely area to linger after the tour.</div>
+    </div>
+  </div>
+  <div class="tips-box">
+    <div class="tips-label">Tips</div>
+    <ul class="tips-list">
+      <li>Book both walking tours (Days 9 and 10) together when you first plan your trip.</li>
+      <li>Bridgerton locations include some of London's most photogenic streets — bring a camera.</li>
+      <li>The Mayfair area has wonderful restaurants for a post-tour lunch in appropriately grand surroundings.</li>
+    </ul>
+  </div>
+  <div class="day-nav"><button class="day-nav-btn" onclick="showView('d9')">← Day 9</button><button class="day-nav-btn next" onclick="showView('d11')">Day 11 →</button></div>
+</div>
+
+<!-- ── DAY 11 ── -->
+<div id="view-d11" class="day-view">
+  <div class="day-header">
+    <div class="day-num-badge">11</div>
+    <div class="day-header-text">
+      <div class="day-header-date">Thursday, May 15 · West London</div>
+      <div class="day-header-title">Sherlock's Mind Palace Afternoon Tea</div>
+      <div class="day-header-note">Elementary, my dear traveller. A speakeasy tea with a mystery to solve.</div>
+    </div>
+  </div>
+  <div class="stops-grid">
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">12:00–3:45 PM</span><div class="stop-name">Sherlock's Mind Palace Afternoon Tea</div></div>
+      <div class="stop-duration">~90 min · W12 Centre, Shepherd's Bush</div>
+      <div class="stop-note">Enter through the front of "Doyle's Opticians" at W12 Shopping Centre. Inside: a secret Sherlock-themed speakeasy with sandwiches, scones, cakes, tea, and a mini mystery to solve at your table. Available slots: 12:15, 1:00, 1:45, 2:45, or 3:45pm.</div>
+      <div class="stop-badges"><span class="badge timing">Thu–Sun only</span><span class="badge book">Book at sherlockescaperooms.com</span></div>
+    </div>
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">Afternoon</span><div class="stop-name">Shepherd's Bush / Westfield</div></div>
+      <div class="stop-note">After tea, Westfield Shepherd's Bush is one of London's largest shopping centres right next door. Or take the Central line one stop to Holland Park for a beautiful garden walk.</div>
+    </div>
+  </div>
+  <div class="tips-box">
+    <div class="tips-label">Tips</div>
+    <ul class="tips-list">
+      <li>Nearest Tube: Shepherd's Bush (Central line, ~20 min from Holborn).</li>
+      <li>Minimum 2 people required; email dietary requirements 72 hours in advance.</li>
+      <li>The boozy version (bottomless Prosecco 90 mins) is available for 18+ groups — highly recommended!</li>
+      <li>The "Doyle's Opticians" entrance is part of the experience — don't be confused by the shopfront.</li>
+    </ul>
+  </div>
+  <div class="day-nav"><button class="day-nav-btn" onclick="showView('d10')">← Day 10</button><button class="day-nav-btn next" onclick="showView('d12')">Day 12 →</button></div>
+</div>
+
+<!-- ── DAY 12 ── -->
+<div id="view-d12" class="day-view">
+  <div class="day-header">
+    <div class="day-num-badge">12</div>
+    <div class="day-header-text">
+      <div class="day-header-date">Friday, May 16 · Day Trip to Kent</div>
+      <div class="day-header-title">Leeds Castle</div>
+      <div class="day-header-note">"The loveliest castle in the world" — surrounded by a moat, a maze, and 900 years of history.</div>
+    </div>
+  </div>
+  <div class="stops-grid">
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">8:30 AM</span><div class="stop-name">Depart from London Bridge Station</div></div>
+      <div class="stop-note">Train to Bearsted station (~55 min). Trains run approximately every 30 min. Then take the shuttle bus to the castle (timed to coincide with trains).</div>
+    </div>
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">10:00 AM</span><div class="stop-name">Leeds Castle</div></div>
+      <div class="stop-duration">Full day · Broomfield, Maidstone ME17</div>
+      <div class="stop-note">Audio tour of the castle rooms. The estate maze (trickier than it looks). Falconry shows. Beautiful parkland and lake. A kids' play area. Plenty to fill a whole day. The ticket is valid for return visits for a full year.</div>
+      <div class="stop-badges"><span class="badge book">Book at leeds-castle.com</span></div>
+    </div>
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">~4:00 PM</span><div class="stop-name">Return to London</div></div>
+      <div class="stop-note">Shuttle bus back to Bearsted, train to London Bridge. Back in central London by about 5:30pm.</div>
+    </div>
+  </div>
+  <div class="tips-box">
+    <div class="tips-label">Tips</div>
+    <ul class="tips-list">
+      <li>Bring your own picnic — the castle café is lovely but pricey.</li>
+      <li>The castle closes at 4pm so plan your day accordingly.</li>
+      <li>Leeds Castle is NOT in Leeds (it's named after a person). It's in Kent, southeast of London.</li>
+      <li>Check the shuttle bus timetable when booking — it coordinates with specific trains from London Bridge.</li>
+    </ul>
+  </div>
+  <div class="day-nav"><button class="day-nav-btn" onclick="showView('d11')">← Day 11</button><button class="day-nav-btn next" onclick="showView('d13')">Day 13 →</button></div>
+</div>
+
+<!-- ── DAY 13 ── -->
+<div id="view-d13" class="day-view">
+  <div class="day-header">
+    <div class="day-num-badge">13</div>
+    <div class="day-header-text">
+      <div class="day-header-date">Saturday, May 17 · Day Trip to Kent</div>
+      <div class="day-header-title">Hever Castle</div>
+      <div class="day-header-note">Anne Boleyn's childhood home — intimate, authentic, and utterly romantic.</div>
+    </div>
+  </div>
+  <div class="stops-grid">
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">8:30 AM</span><div class="stop-name">Depart from London Victoria Station</div></div>
+      <div class="stop-note">Train to Hever station (~1 hour). A rural single-track line through beautiful Kent countryside. Trains are infrequent — check timetables carefully for your return.</div>
+    </div>
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">10:30 AM</span><div class="stop-name">Hever Castle & Gardens</div></div>
+      <div class="stop-duration">Full day · Hever, Edenbridge TN8</div>
+      <div class="stop-note">A 15–20 min walk from the station through a field path (can be muddy — wear boots or sturdy shoes). The castle itself is small, intimate, and brilliantly preserved. The Italian gardens, topiary maze, and lake are outstanding. Open 10:30am–6pm.</div>
+      <div class="stop-badges"><span class="badge book">Book at hevercastle.co.uk</span></div>
+    </div>
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">Lunch</span><div class="stop-name">King Henry VIII Pub, Hever Village</div></div>
+      <div class="stop-note">The village pub next to the castle entrance — charming 16th-century pub, excellent food, and an atmosphere perfectly matching the setting. Reviewers rave about it.</div>
+    </div>
+  </div>
+  <div class="tips-box">
+    <div class="tips-label">Tips</div>
+    <ul class="tips-list">
+      <li>Trains from Hever back to London are roughly every 2 hours — download the timetable before you go.</li>
+      <li>The field path from Hever station can be muddy in spring — bring waterproof shoes.</li>
+      <li>Hever feels more personal and less crowded than Leeds Castle — a wonderful contrast.</li>
+      <li>The military museum on the estate grounds is a hidden gem — free with castle admission.</li>
+    </ul>
+  </div>
+  <div class="day-nav"><button class="day-nav-btn" onclick="showView('d12')">← Day 12</button><button class="day-nav-btn next" onclick="showView('d14')">Day 14 →</button></div>
+</div>
+
+<!-- ── DAY 14 ── -->
+<div id="view-d14" class="day-view">
+  <div class="day-header">
+    <div class="day-num-badge">14</div>
+    <div class="day-header-text">
+      <div class="day-header-date">Sunday, May 18 · Day Trip to Gloucestershire</div>
+      <div class="day-header-title">Gloucester Cathedral + optional Cheltenham</div>
+      <div class="day-header-note">Harry Potter's cloisters, one of England's finest cathedrals, and a beautiful Regency spa town.</div>
+    </div>
+  </div>
+  <div class="stops-grid">
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">7:30 AM</span><div class="stop-name">Depart from London Paddington</div></div>
+      <div class="stop-note">GWR train to Gloucester (~1hr 45min). Book in advance for best fares. Trains run regularly from Paddington.</div>
+    </div>
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">9:30 AM</span><div class="stop-name">Gloucester Cathedral</div></div>
+      <div class="stop-duration">2–3 hours · College Green GL1</div>
+      <div class="stop-note">Free entry (donation welcomed). The fan-vaulted cloisters used in Harry Potter films are breathtaking. Book a guided tour (£8 per person) for expert context on 1,300 years of history. The whispering gallery views from above are worth the climb.</div>
+      <div class="stop-badges"><span class="badge free">Free entry</span><span class="badge book">Guided tour recommended</span></div>
+    </div>
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">1:00 PM</span><div class="stop-name">Cheltenham (optional)</div></div>
+      <div class="stop-duration">2 hours · 30 min by bus from Gloucester</div>
+      <div class="stop-note">A beautiful Regency spa town with elegant Georgian terraces, the famous Promenade, independent boutiques, and excellent restaurants. Stagecoach bus 94 runs every 10 min between Gloucester and Cheltenham.</div>
+    </div>
+  </div>
+  <div class="tips-box">
+    <div class="tips-label">Tips</div>
+    <ul class="tips-list">
+      <li>Book Paddington train tickets in advance for much cheaper fares (GWR Advance tickets).</li>
+      <li>The cathedral is quieter on Sunday mornings — you may catch a choral service (free to attend).</li>
+      <li>If skipping Cheltenham, explore Gloucester Docks instead — beautiful Victorian warehouses turned restaurants.</li>
+      <li>Return train from Gloucester to Paddington has good frequency throughout the afternoon.</li>
+    </ul>
+  </div>
+  <div class="day-nav"><button class="day-nav-btn" onclick="showView('d13')">← Day 13</button><button class="day-nav-btn next" onclick="showView('d15')">Day 15 →</button></div>
+</div>
+
+<!-- ── DAY 15 ── -->
+<div id="view-d15" class="day-view">
+  <div class="day-header">
+    <div class="day-num-badge">15</div>
+    <div class="day-header-text">
+      <div class="day-header-date">Monday, May 19 · Departure Day</div>
+      <div class="day-header-title">Final Morning + Farewell London</div>
+      <div class="day-header-note">Savour the last few hours. London will be here when you return.</div>
+    </div>
+  </div>
+  <div class="stops-grid">
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">Morning</span><div class="stop-name">Covent Garden Market</div></div>
+      <div class="stop-note">Steps from your hotel. Open from 10am. Last chance for London souvenirs, handmade crafts, and a proper goodbye coffee in the piazza.</div>
+    </div>
+    <div class="stop-card">
+      <div class="stop-top"><span class="stop-time">Flexible</span><div class="stop-name">Any remaining sites</div></div>
+      <div class="stop-note">If there are any missed stops from the itinerary — the Strand, Somerset House, or just a final walk along the Thames — today is the day. Keep it light and enjoyable.</div>
+    </div>
+  </div>
+  <div class="tips-box">
+    <div class="tips-label">Airport transport reminders</div>
+    <ul class="tips-list">
+      <li>Heathrow: Piccadilly line from Holborn (direct, ~50 min, from Covent Garden area) or Heathrow Express from Paddington (15 min, pricier).</li>
+      <li>Gatwick: Gatwick Express from Victoria (30 min) or Southern/Thameslink (45 min, cheaper).</li>
+      <li>St Pancras (Eurostar): Northern line from Covent Garden area (~15 min).</li>
+      <li>Allow 3 hours from hotel departure for international flights; 2 hours for domestic.</li>
+    </ul>
+  </div>
+  <div class="day-nav"><button class="day-nav-btn" onclick="showView('d14')">← Day 14</button><button class="day-nav-btn next" onclick="showView('booking')">📋 Booking Checklist →</button></div>
+</div>
+
+<!-- ── BOOKING ── -->
+<div id="view-booking" class="day-view">
+  <div class="section-label">Booking Checklist</div>
+  <p style="font-size:14px;color:var(--text-mid);margin-bottom:24px;">These are the items that need advance booking — sorted by urgency. Book the "high priority" items as soon as possible.</p>
+  <div class="booking-grid">
+    <div class="booking-card">
+      <span class="booking-urgency urgency-high">Book Now</span>
+      <h3>London Eye</h3>
+      <p>Sells out weeks in advance in spring/summer. Choose your time slot carefully. <strong>londoneye.com</strong></p>
+    </div>
+    <div class="booking-card">
+      <span class="booking-urgency urgency-high">Book Now</span>
+      <h3>Tower of London</h3>
+      <p>Online tickets skip the queue and are cheaper than door. <strong>hrp.org.uk</strong></p>
+    </div>
+    <div class="booking-card">
+      <span class="booking-urgency urgency-high">Book Now</span>
+      <h3>Sherlock's Mind Palace Tea</h3>
+      <p>Thu–Sun only. Popular experience with limited slots. Email dietary requirements 72 hrs before. <strong>sherlockescaperooms.com</strong></p>
+    </div>
+    <div class="booking-card">
+      <span class="booking-urgency urgency-high">Book Now</span>
+      <h3>Brit Movie Tours (both)</h3>
+      <p>Doctor Who AND Bridgerton tours — book together. Confirm meeting point in your confirmation. <strong>britmovietours.com</strong></p>
+    </div>
+    <div class="booking-card">
+      <span class="booking-urgency urgency-med">Book in Advance</span>
+      <h3>Jack the Ripper Walking Tour</h3>
+      <p>Evening tour — several operators. "Elegant Sam" from the museum's tours is highly rated. Book directly from the museum website.</p>
+    </div>
+    <div class="booking-card">
+      <span class="booking-urgency urgency-med">Book in Advance</span>
+      <h3>Leeds Castle</h3>
+      <p>Online tickets required. Opens 10am, closes 4pm. Also book shuttle bus timing from Bearsted. <strong>leeds-castle.com</strong></p>
+    </div>
+    <div class="booking-card">
+      <span class="booking-urgency urgency-med">Book in Advance</span>
+      <h3>Hever Castle</h3>
+      <p>Online tickets, opens 10:30am. Check the Hever station train timetable carefully — return trains are infrequent. <strong>hevercastle.co.uk</strong></p>
+    </div>
+    <div class="booking-card">
+      <span class="booking-urgency urgency-med">Book in Advance</span>
+      <h3>Tower Bridge</h3>
+      <p>Recommended to book online especially in spring/summer. <strong>towerbridge.org.uk</strong></p>
+    </div>
+    <div class="booking-card">
+      <span class="booking-urgency urgency-med">Book in Advance</span>
+      <h3>Paddington → Gloucester Train</h3>
+      <p>GWR Advance tickets can be significantly cheaper. Book early for Day 14. <strong>gwr.com</strong></p>
+    </div>
+    <div class="booking-card">
+      <span class="booking-urgency urgency-info">Reserve (Free)</span>
+      <h3>Natural History Museum</h3>
+      <p>Free entry but reserve a timed ticket online to avoid queuing at the door. <strong>nhm.ac.uk</strong></p>
+    </div>
+    <div class="booking-card">
+      <span class="booking-urgency urgency-info">Reserve (Free)</span>
+      <h3>British Museum</h3>
+      <p>Free entry. Timed entry slots help manage queues, especially on weekends. <strong>britishmuseum.org</strong></p>
+    </div>
+    <div class="booking-card">
+      <span class="booking-urgency urgency-info">Confirm Before Visiting</span>
+      <h3>The Who Shop</h3>
+      <p>Confirm current address at <strong>thewhoshop.com</strong> — they have moved premises before. Plan for Thu, Fri, or Sat visit.</p>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+const views = ['overview','d1','d2','d3','d4','d5','d6','d7','d8','d9','d10','d11','d12','d13','d14','d15','booking'];
+
+function showView(id) {
+  views.forEach(v => {
+    const el = document.getElementById('view-' + v);
+    if (el) el.classList.remove('active');
+  });
+  const target = document.getElementById('view-' + id);
+  if (target) target.classList.add('active');
+
+  const btns = document.querySelectorAll('.nav-btn');
+  btns.forEach((btn, i) => btn.classList.remove('active'));
+  const idx = views.indexOf(id);
+  if (idx >= 0 && btns[idx]) btns[idx].classList.add('active');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
